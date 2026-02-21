@@ -1,33 +1,36 @@
-# ✅ UC6: Unit Addition Feature
+# ✅ UC7: Target Unit Addition
 
 ## 📖 Description
 
-The Quantity Measurement Application is enhanced to support **addition of length quantities**, even when the units are different.
+The Quantity Measurement Application is enhanced to support **addition of length quantities with a specified target unit**.
 
-Building upon:
+This feature builds upon:
 
-- UC3 (Generic Length Design)
-- UC4 (Yard Support)
-- UC5 (Unit Conversion)
+- UC3 – Generic Length Design  
+- UC4 – Yard Support  
+- UC5 – Unit Conversion  
+- UC6 – Unit Addition  
 
-UC6 introduces the ability to add two `QuantityLength` objects and return the result in a consistent and predictable unit.
+UC7 allows users to add two `QuantityLength` objects and explicitly specify the unit in which the result should be returned.
 
-Example:
+### 📌 Example
 
-1 ft + 12 inch = 2 ft
-1 yard + 3 ft = 2 yard
+```
+1 ft + 12 inch → 24 inch
+1 yard + 3 ft → 6 ft
+3 ft + 1 yard → 2 yard
+```
 
-
-All operations are internally normalized through a base unit (**Feet**) to ensure correctness.
+All calculations internally normalize values through a base unit (**Feet**) to ensure consistency and accuracy.
 
 ---
 
 ## 🔎 Preconditions
 
-- Two `QuantityLength` objects must be created.
-- Both objects must have valid `LengthUnit`.
+- Two valid `QuantityLength` objects must be created.
+- A valid `LengthUnit` must be provided as the target unit.
 - The second operand must not be `null`.
-- Units supported:
+- Supported units:
   - Feet
   - Inch
   - Yard
@@ -36,52 +39,49 @@ All operations are internally normalized through a base unit (**Feet**) to ensur
 
 ## 🔄 Main Flow
 
-1. User calls the `add()` method on a `QuantityLength` object.
+1. User calls:
+
+   ```java
+   add(QuantityLength other, LengthUnit targetUnit)
+   ```
+
 2. Internally:
-   - Both values are converted to the base unit (Feet).
-   - The values are added.
-   - The result is converted back to the unit of the calling object.
+   - Both quantities are converted to the base unit (Feet).
+   - Values are added.
+   - The sum is converted to the specified target unit.
+
 3. A new immutable `QuantityLength` object is returned.
 
 ---
 
 ## 📤 Postconditions
 
-- Returns a new `QuantityLength` containing the sum.
-- The original objects remain unchanged (immutability preserved).
+- Returns a new `QuantityLength` object in the specified target unit.
+- Original objects remain unchanged (immutability preserved).
 - Throws `IllegalArgumentException` if attempting to add `null`.
 
 ---
 
-## 🧠 Concepts Learned (UC6)
+## 🧠 Concepts Learned (UC7)
 
-- ✅ Cross-unit arithmetic operations
-- ✅ Base unit normalization for safe computation
-- ✅ Immutability (returns new object instead of modifying existing one)
-- ✅ Exception handling
-- ✅ Clean and extensible architecture
-- ✅ Reuse of conversion logic (DRY Principle)
+- Target-based arithmetic operations  
+- Flexible API design  
+- Base unit normalization  
+- Open-Closed Principle  
+- Immutability  
+- Clean and scalable architecture  
 
 ---
 
 ## 🧪 Key Concepts Tested
 
-### ➕ Same Unit Addition
+### ➕ Target Unit Addition
 
-| Operation | Result |
-|------------|--------|
-| 1 ft + 1 ft | 2 ft |
-| 1 yard + 1 yard | 2 yard |
-
----
-
-### 🔄 Cross-Unit Addition
-
-| Operation | Result |
-|------------|--------|
-| 1 ft + 12 inch | 2 ft |
-| 1 yard + 3 ft | 2 yard |
-| 1 yard + 36 inch | 2 yard |
+| Operation | Target Unit | Result |
+|------------|------------|--------|
+| 1 ft + 12 inch | Inch | 24 inch |
+| 1 yard + 3 ft | Feet | 6 ft |
+| 3 ft + 1 yard | Yard | 2 yard |
 
 ---
 
@@ -93,11 +93,50 @@ All operations are internally normalized through a base unit (**Feet**) to ensur
 
 ## 🧪 Sample Test Cases
 
-- `testFeetPlusFeet()`
-- `testFeetPlusInch()`
-- `testYardPlusFeet()`
-- `testYardPlusInch()`
+- `testAdditionWithTargetUnit_Inch()`
+- `testAdditionWithTargetUnit_Feet()`
+- `testAdditionWithTargetUnit_Yard()`
 - `testAddNull_ShouldThrowException()`
 - `testCrossUnitEquality()`
 
 ---
+
+## 📁 Project Structure
+
+```
+src/main/java/com/QuantityMeasurementApp/
+    LengthUnit.java
+    QuantityLength.java
+
+src/test/java/com/QuantityMeasurementApp/
+    QuantityLengthTest.java
+```
+
+---
+
+## 🚀 Architectural Evolution
+
+| Use Case | Capability Added |
+|-----------|------------------|
+| UC1 | Feet equality |
+| UC2 | Feet + Inch equality |
+| UC3 | Generic Length design |
+| UC4 | Yard support |
+| UC5 | Unit conversion |
+| UC6 | Unit addition |
+| UC7 | Target unit addition |
+
+---
+
+## 🔥 Key Achievement
+
+UC7 provides full flexibility for arithmetic operations across units by allowing users to control the output unit.
+
+The system now supports:
+
+- Equality comparison  
+- Unit conversion  
+- Cross-unit addition  
+- Target-based addition  
+
+The architecture remains scalable and easily extendable for future units.
