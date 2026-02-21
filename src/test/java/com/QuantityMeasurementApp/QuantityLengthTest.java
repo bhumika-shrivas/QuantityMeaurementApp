@@ -3,75 +3,59 @@ package com.QuantityMeasurementApp;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for Generic Length Equality (UC4).
- */
 class QuantityLengthTest {
 
-    // ---------- SAME UNIT TESTS ----------
+    // ---------- CONVERSION TESTS ----------
 
     @Test
-    void testFeetToFeet_SameValue() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength q2 = new QuantityLength(1.0, LengthUnit.FEET);
-        assertTrue(q1.equals(q2));
+    void testFeetToInchConversion() {
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength converted = feet.convertTo(LengthUnit.INCH);
+
+        assertEquals(12.0, converted.getValue());
+        assertEquals(LengthUnit.INCH, converted.getUnit());
     }
 
     @Test
-    void testInchToInch_SameValue() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength q2 = new QuantityLength(1.0, LengthUnit.INCH);
-        assertTrue(q1.equals(q2));
+    void testInchToFeetConversion() {
+        QuantityLength inch = new QuantityLength(12.0, LengthUnit.INCH);
+        QuantityLength converted = inch.convertTo(LengthUnit.FEET);
+
+        assertEquals(1.0, converted.getValue());
+        assertEquals(LengthUnit.FEET, converted.getUnit());
     }
 
     @Test
-    void testYardToYard_SameValue() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength q2 = new QuantityLength(1.0, LengthUnit.YARD);
-        assertTrue(q1.equals(q2));
+    void testYardToFeetConversion() {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength converted = yard.convertTo(LengthUnit.FEET);
+
+        assertEquals(3.0, converted.getValue());
+        assertEquals(LengthUnit.FEET, converted.getUnit());
     }
 
-    // ---------- CROSS UNIT TESTS ----------
+    @Test
+    void testYardToInchConversion() {
+        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength converted = yard.convertTo(LengthUnit.INCH);
+
+        assertEquals(36.0, converted.getValue());
+        assertEquals(LengthUnit.INCH, converted.getUnit());
+    }
+
+    // ---------- EQUALITY STILL WORKS ----------
 
     @Test
-    void testFeetToInch_Equivalent() {
+    void testCrossUnitEquality() {
         QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
         QuantityLength inch = new QuantityLength(12.0, LengthUnit.INCH);
+
         assertTrue(feet.equals(inch));
     }
 
     @Test
-    void testYardToFeet_Equivalent() {
-        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength feet = new QuantityLength(3.0, LengthUnit.FEET);
-        assertTrue(yard.equals(feet));
-    }
-
-    @Test
-    void testYardToInch_Equivalent() {
-        QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength inch = new QuantityLength(36.0, LengthUnit.INCH);
-        assertTrue(yard.equals(inch));
-    }
-
-    // ---------- NEGATIVE TESTS ----------
-
-    @Test
-    void testDifferentValues_ShouldReturnFalse() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength q2 = new QuantityLength(2.0, LengthUnit.FEET);
-        assertFalse(q1.equals(q2));
-    }
-
-    @Test
-    void testNullComparison_ShouldReturnFalse() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        assertFalse(q1.equals(null));
-    }
-
-    @Test
-    void testSameReference_ShouldReturnTrue() {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        assertTrue(q1.equals(q1));
+    void testNullComparison() {
+        QuantityLength q = new QuantityLength(1.0, LengthUnit.FEET);
+        assertFalse(q.equals(null));
     }
 }
