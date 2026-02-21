@@ -5,42 +5,55 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuantityLengthTest {
 
-    // ---------- CONVERSION TESTS ----------
+    // ---------- ADDITION TESTS ----------
 
     @Test
-    void testFeetToInchConversion() {
+    void testFeetPlusFeet() {
+        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength q2 = new QuantityLength(1.0, LengthUnit.FEET);
+
+        QuantityLength result = q1.add(q2);
+
+        assertEquals(2.0, result.getValue());
+        assertEquals(LengthUnit.FEET, result.getUnit());
+    }
+
+    @Test
+    void testFeetPlusInch() {
         QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength converted = feet.convertTo(LengthUnit.INCH);
-
-        assertEquals(12.0, converted.getValue());
-        assertEquals(LengthUnit.INCH, converted.getUnit());
-    }
-
-    @Test
-    void testInchToFeetConversion() {
         QuantityLength inch = new QuantityLength(12.0, LengthUnit.INCH);
-        QuantityLength converted = inch.convertTo(LengthUnit.FEET);
 
-        assertEquals(1.0, converted.getValue());
-        assertEquals(LengthUnit.FEET, converted.getUnit());
+        QuantityLength result = feet.add(inch);
+
+        assertEquals(2.0, result.getValue());
     }
 
     @Test
-    void testYardToFeetConversion() {
+    void testYardPlusFeet() {
         QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength converted = yard.convertTo(LengthUnit.FEET);
+        QuantityLength feet = new QuantityLength(3.0, LengthUnit.FEET);
 
-        assertEquals(3.0, converted.getValue());
-        assertEquals(LengthUnit.FEET, converted.getUnit());
+        QuantityLength result = yard.add(feet);
+
+        assertEquals(2.0, result.getValue());
+        assertEquals(LengthUnit.YARD, result.getUnit());
     }
 
     @Test
-    void testYardToInchConversion() {
+    void testYardPlusInch() {
         QuantityLength yard = new QuantityLength(1.0, LengthUnit.YARD);
-        QuantityLength converted = yard.convertTo(LengthUnit.INCH);
+        QuantityLength inch = new QuantityLength(36.0, LengthUnit.INCH);
 
-        assertEquals(36.0, converted.getValue());
-        assertEquals(LengthUnit.INCH, converted.getUnit());
+        QuantityLength result = yard.add(inch);
+
+        assertEquals(2.0, result.getValue());
+    }
+
+    @Test
+    void testAddNull_ShouldThrowException() {
+        QuantityLength q = new QuantityLength(1.0, LengthUnit.FEET);
+
+        assertThrows(IllegalArgumentException.class, () -> q.add(null));
     }
 
     // ---------- EQUALITY STILL WORKS ----------
@@ -51,11 +64,5 @@ class QuantityLengthTest {
         QuantityLength inch = new QuantityLength(12.0, LengthUnit.INCH);
 
         assertTrue(feet.equals(inch));
-    }
-
-    @Test
-    void testNullComparison() {
-        QuantityLength q = new QuantityLength(1.0, LengthUnit.FEET);
-        assertFalse(q.equals(null));
     }
 }

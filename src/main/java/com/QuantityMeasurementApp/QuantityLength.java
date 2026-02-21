@@ -2,7 +2,7 @@ package com.QuantityMeasurementApp;
 
 /**
  * Represents a generic length measurement.
- * Supports equality and unit conversion.
+ * Supports equality, conversion, and addition.
  */
 public class QuantityLength {
 
@@ -23,26 +23,42 @@ public class QuantityLength {
     }
 
     /**
-     * Converts this quantity to a target unit.
+     * Converts this quantity to target unit.
      */
     public QuantityLength convertTo(LengthUnit targetUnit) {
 
-        // Step 1: Convert current value to base unit (Feet)
         double valueInFeet = unit.toFeet(this.value);
-
-        // Step 2: Convert from Feet to target unit
         double convertedValue = targetUnit.fromFeet(valueInFeet);
 
         return new QuantityLength(convertedValue, targetUnit);
+    }
+
+    /**
+     * Adds two quantities and returns result in current unit.
+     */
+    public QuantityLength add(QuantityLength other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException("Cannot add null quantity");
+        }
+
+        // Convert both to Feet (base unit)
+        double thisInFeet = this.unit.toFeet(this.value);
+        double otherInFeet = other.unit.toFeet(other.value);
+
+        double sumInFeet = thisInFeet + otherInFeet;
+
+        // Convert result back to this unit
+        double finalValue = this.unit.fromFeet(sumInFeet);
+
+        return new QuantityLength(finalValue, this.unit);
     }
 
     @Override
     public boolean equals(Object obj) {
 
         if (this == obj) return true;
-
         if (obj == null) return false;
-
         if (!(obj instanceof QuantityLength)) return false;
 
         QuantityLength other = (QuantityLength) obj;
