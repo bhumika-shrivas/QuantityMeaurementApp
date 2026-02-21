@@ -1,12 +1,14 @@
 package com.QuantityMeasurementApp;
 
 /**
- * Enum for supported length units.
- * Each unit defines a conversion factor to a base unit (feet).
+ * Enum representing supported length units.
+ * Each unit defines a conversion factor to the base unit (Feet).
  */
 public enum LengthUnit {
-    FEET(1.0),
-    INCH(1.0 / 12.0);
+
+    FEET(1.0),          // Base unit
+    INCH(1.0 / 12.0),   // 1 Inch = 1/12 Feet
+    YARD(3.0);          // 1 Yard = 3 Feet
 
     private final double toFeetFactor;
 
@@ -15,10 +17,10 @@ public enum LengthUnit {
     }
 
     /**
-     * Convert a value of this unit to feet.
+     * Converts the given value to Feet.
      *
      * @param value measurement value
-     * @return value converted to feet
+     * @return converted value in feet
      */
     public double toFeet(double value) {
         return value * toFeetFactor;
