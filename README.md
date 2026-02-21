@@ -1,141 +1,94 @@
-# ✅ UC4: Yard Equality Support
+# ✅ UC5: Unit Conversion Support
 
 ## 📖 Description
 
-The Quantity Measurement Application is extended to support **Yard** as a new unit of length.
+The Quantity Measurement Application is enhanced to support **explicit unit conversion** between supported length units.
 
-This enhancement builds on the generic design introduced in **UC3**, where all length measurements are represented using:
+Building on the generic architecture introduced in **UC3** and extended in **UC4**, UC5 allows a `QuantityLength` object to be converted from one unit to another.
 
-- `QuantityLength` (generic length class)
-- `LengthUnit` (enum for supported units)
-
-With UC4, the system now supports:
+Supported units:
 
 - Feet
 - Inch
 - Yard
 
-All units can be compared with each other using automatic conversion to a common base unit (Feet).
+All conversions are internally normalized through a base unit (**Feet**) to ensure accuracy and consistency.
 
 ---
 
 ## 🔎 Preconditions
 
-- `QuantityLength` objects must be created with:
+- A `QuantityLength` object must be created with:
   - A numeric value
   - A valid `LengthUnit`
-- Supported units are defined in `LengthUnit` enum.
-- Yard conversion factor is properly defined:
-  
-
-1 Yard = 3 Feet
-1 Yard = 36 Inches
-
+- Conversion is performed using the `convertTo()` method.
+- Supported conversion factors:
+  - `1 Foot = 12 Inch`
+  - `1 Yard = 3 Feet`
+  - `1 Yard = 36 Inch`
 
 ---
 
 ## 🔄 Main Flow
 
-1. User creates two `QuantityLength` objects.
-2. Each object stores:
- - A numeric value
- - Its measurement unit
-3. During comparison:
- - Both values are converted to the base unit (Feet).
- - `Double.compare()` ensures precise floating-point comparison.
-4. Equality result (`true` / `false`) is returned.
+1. User creates a `QuantityLength` object.
+2. Calls `convertTo(targetUnit)` method.
+3. Internally:
+   - Value is converted to base unit (Feet).
+   - Then converted from Feet to target unit.
+4. A new `QuantityLength` object is returned with:
+   - Converted value
+   - Target unit
 
 ---
 
 ## 📤 Postconditions
 
-- Returns `true` if:
-- Measurements are equivalent after unit conversion
-- Returns `false` if:
-- Converted values differ
-- Compared object is `null`
-- Compared with a different type
+- Returns a new `QuantityLength` object in the requested unit.
+- Original object remains unchanged (immutability preserved).
+- Equality logic remains unaffected and continues to work across units.
 
 ---
 
-## 🧠 Concepts Learned (UC4)
+## 🧠 Concepts Learned (UC5)
 
-- ✅ Open-Closed Principle (Extend without modifying core logic)
-- ✅ Enum-based unit representation
-- ✅ Cross-unit comparison
-- ✅ Scalable architecture
-- ✅ Clean and maintainable design
-- ✅ DRY Principle (No duplicate logic)
+- ✅ Unit Conversion Logic
+- ✅ Bi-directional Conversion
+- ✅ Immutability (returns new object)
+- ✅ Base Unit Normalization
+- ✅ Open-Closed Principle
+- ✅ Clean and Extensible Design
 
 ---
 
 ## 🧪 Key Concepts Tested
 
-### 🔁 Equality Contract
+### 🔄 Unit Conversion
 
-- Reflexive  
-- Symmetric  
-- Transitive  
-- Consistent  
-- Null handling  
+| Conversion | Result |
+|------------|--------|
+| 1 ft → inch | 12 inch |
+| 12 inch → ft | 1 ft |
+| 1 yard → ft | 3 ft |
+| 1 yard → inch | 36 inch |
 
 ---
 
-### 🔄 Cross-Unit Conversion
+### 🔁 Equality After Conversion
 
-| Comparison | Result |
-|------------|--------|
-| 1 Yard vs 1 Yard | ✅ Equal |
-| 1 Yard vs 3 Feet | ✅ Equal |
-| 1 Yard vs 36 Inch | ✅ Equal |
-| 2 Yard vs 6 Feet | ✅ Equal |
-| 1 Yard vs 2 Yard | ❌ Not Equal |
+- `1 ft == 12 inch`
+- `1 yard == 3 ft`
+- `1 yard == 36 inch`
 
 ---
 
 ## 🧪 Sample Test Cases
 
-- `testYardToYard_SameValue()`
-- `testYardToFeet_Equivalent()`
-- `testYardToInch_Equivalent()`
-- `testDifferentValues_ShouldReturnFalse()`
-- `testNullComparison_ShouldReturnFalse()`
-- `testSameReference_ShouldReturnTrue()`
+- `testFeetToInchConversion()`
+- `testInchToFeetConversion()`
+- `testYardToFeetConversion()`
+- `testYardToInchConversion()`
+- `testCrossUnitEquality()`
+- `testNullComparison()`
 
 ---
-
-## 📁 Project Structure (UC4)
-
-
-src/main/java/com/QuantityMeasurementApp/
-LengthUnit.java
-QuantityLength.java
-
-src/test/java/com/QuantityMeasurementApp/
-QuantityLengthTest.java
-
-
----
-
-## 🚀 Architectural Evolution
-
-| Use Case | Design |
-|----------|--------|
-| UC1 | Only Feet |
-| UC2 | Feet + Inch |
-| UC3 | Generic Length (Enum-based) |
-| UC4 | Extended with Yard (No logic modification required) |
-
----
-
-## 🔥 Key Achievement
-
-Adding a new unit (Yard) required **only one change** — updating the `LengthUnit` enum.
-
-No modification was needed in:
-
-- `QuantityLength`
-- Equality logic
-- Conversion logic
-
-This demonstrates a scalable and extensible architecture.
