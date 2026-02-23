@@ -1,26 +1,28 @@
 package com.QuantityMeasurementApp;
 
-/**
- * Enum for weight units.
- * Base unit: Gram
- */
 public enum WeightUnit {
 
-    GRAM(1.0),
-    KILOGRAM(1000.0),
-    TONNE(1000000.0);
+    KILOGRAM(1.0),
+    GRAM(0.001),
+    POUND(0.453592);
 
-    private final double toGramFactor;
+    private final double conversionFactor;
 
-    WeightUnit(double toGramFactor) {
-        this.toGramFactor = toGramFactor;
+    WeightUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
     }
 
-    public double toGram(double value) {
-        return value * toGramFactor;
+    public double getConversionFactor() {
+        return conversionFactor;
     }
 
-    public double fromGram(double gramValue) {
-        return gramValue / toGramFactor;
+    public double convertToBaseUnit(double value) {
+        double result = value * conversionFactor;
+        return Math.round(result * 100.0) / 100.0;
+    }
+
+    public double convertFromBaseUnit(double baseValue) {
+        double result = baseValue / conversionFactor;
+        return Math.round(result * 100.0) / 100.0;
     }
 }
