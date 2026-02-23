@@ -1,168 +1,159 @@
-# ✅ UC12: Subtraction & Division Support
+# ✅ UC13: Centralized Arithmetic Logic
 
 ## 📖 Description
 
-UC12 extends the Generic Quantity architecture by introducing **Subtraction** and **Division** operations.
+UC13 focuses on architectural improvement by centralizing arithmetic logic inside the `Quantity` class.
 
-Until UC11, the system supported:
+Until UC12, arithmetic operations such as:
 
-- Equality comparison
-- Unit conversion
-- Addition (implicit & explicit target unit)
-- Multiple domains (Length, Weight, Volume)
+- Addition
+- Subtraction
+- Explicit target unit arithmetic
 
-UC12 upgrades the system into a **complete arithmetic measurement framework** by adding:
+contained repeated base conversion logic.
 
-- Subtraction between quantities
-- Explicit target unit subtraction
-- Division producing a dimensionless ratio
+UC13 refactors the system to eliminate duplication by introducing a single centralized method responsible for handling arithmetic operations.
 
-This enhancement preserves immutability, type safety, and cross-category protection.
+No new functionality is added in this use case.  
+All previous use cases (UC1–UC12) must continue to work unchanged.
 
 ---
 
 ## 🎯 Objective
 
-- Implement subtraction for same-category quantities.
-- Support explicit target unit subtraction.
-- Implement division returning a `double` ratio.
-- Prevent cross-category arithmetic.
-- Maintain immutability.
-- Ensure backward compatibility with UC1–UC11.
+- Remove duplicated arithmetic logic.
+- Centralize conversion and computation in a single method.
+- Improve maintainability and readability.
+- Preserve backward compatibility.
+- Follow DRY (Don’t Repeat Yourself) principle.
 
 ---
 
-## ➖ Subtraction
+## 🏗 Architectural Improvement
 
-### 🔹 Implicit Target Unit
+### 🔹 Before UC13
 
-Result defaults to the unit of the first operand.
+Arithmetic methods like:
 
-Example:
+```
+add()
+subtract()
+add(targetUnit)
+subtract(targetUnit)
+```
+
+Each performed:
+
+- Conversion to base unit
+- Operation in base unit
+- Conversion back to target unit
+- Rounding logic
+
+This resulted in repeated logic.
+
+---
+
+### 🔹 After UC13
+
+A single private method handles all arithmetic:
+
+```
+private Quantity<U> performOperation(
+    Quantity<U> other,
+    U targetUnit,
+    BinaryOperator<Double> operator
+)
+```
+
+Public methods delegate to it:
+
+```
+add() → performOperation(..., Double::sum)
+subtract() → performOperation(..., (a, b) -> a - b)
+```
+
+This centralizes:
+
+- Base conversion
+- Operation execution
+- Target conversion
+- Rounding
+- Validation
+
+---
+
+## 🔄 Functional Behavior
+
+### ➕ Addition
+
+```
+10 ft + 5 ft → 15 ft
+```
+
+Delegates to centralized method using `Double::sum`.
+
+---
+
+### ➖ Subtraction
 
 ```
 10 ft - 6 inch → 9.5 ft
 ```
 
-### 🔹 Explicit Target Unit
-
-Result is returned in specified unit.
-
-```
-10 ft - 6 inch (target = INCH) → 114 inch
-```
-
-### 🔹 Behavior Rules
-
-- Order matters (non-commutative).
-- Negative results are allowed.
-- Zero results are valid.
-- Rounding applied to 2 decimal places.
-- Returns a new immutable `Quantity<U>`.
+Delegates to centralized method using `(a, b) -> a - b`.
 
 ---
 
-## ➗ Division
+### ➗ Division
 
-Division produces a **dimensionless ratio**.
-
-Example:
+Division remains separate because it returns a `double` ratio and does not produce a `Quantity<U>`.
 
 ```
 10 ft ÷ 5 ft → 2.0
-24 inch ÷ 2 ft → 1.0
 ```
-
-### 🔹 Division Rules
-
-- Units cancel out.
-- Returns `double`.
-- Non-commutative.
-- Division by zero throws `ArithmeticException`.
-- Cross-category division throws `IllegalArgumentException`.
-
----
-
-## 🔒 Cross-Category Safety
-
-Subtraction and division are allowed only within the same measurement category.
-
-Invalid operations:
-
-```
-10 ft - 5 kg
-10 L ÷ 2 ft
-```
-
-These throw `IllegalArgumentException`.
 
 ---
 
 ## 📤 Postconditions
 
-- All arithmetic returns new immutable objects.
-- No mutation of original quantities.
+- No change in behavior from UC12.
+- All previous tests pass without modification.
+- Code duplication removed.
+- Arithmetic logic maintained in a single location.
+- Immutability preserved.
 - Cross-category safety preserved.
-- Division by zero prevented.
-- Previous use cases remain fully functional.
 
 ---
 
-## 🧪 Key Concepts Tested
+## 🧪 Testing Strategy
 
-### ➖ Subtraction Tests
+UC13 does not introduce new functionality.
 
-- Same unit subtraction
-- Cross-unit subtraction
-- Explicit target subtraction
-- Negative results
-- Zero result
-- Null operand handling
-- Cross-category protection
-- Immutability validation
+Therefore:
 
----
-
-### ➗ Division Tests
-
-- Same unit division
-- Cross-unit division
-- Ratio > 1
-- Ratio < 1
-- Non-commutativity
-- Division by zero
-- Cross-category division
-- Immutability validation
-
----
-
-### 🔁 Integration Tests
-
-- Addition and subtraction inverse property
-- Arithmetic chaining
-- Backward compatibility validation
+- All UC1–UC12 test cases must pass unchanged.
+- No new test cases required.
+- Successful test execution validates correct refactoring.
 
 ---
 
 ## 🧠 Concepts Learned
 
-- Non-commutative operation handling
-- Dimensionless ratio design
-- Defensive programming
-- Fail-fast validation
-- Rounding strategy
-- Mathematical property validation
-- Operation chaining
-- Architectural scalability
+- Refactoring without changing behavior
+- DRY principle implementation
+- Functional interfaces (`BinaryOperator`)
+- Centralized logic design
+- Maintainability improvement
+- Clean architecture refinement
 
 ---
 
 ## 🚀 Architectural Evolution
 
-| Use Case | Capability Added |
-|----------|------------------|
+| Use Case | Capability |
+|----------|------------|
 | UC1 | Feet equality |
-| UC2 | Inch equality |
+| UC2 | Inch support |
 | UC3 | Generic Length |
 | UC4 | Yard support |
 | UC5 | Unit conversion |
@@ -173,22 +164,20 @@ These throw `IllegalArgumentException`.
 | UC10 | Generic quantity architecture |
 | UC11 | Volume measurement |
 | UC12 | Subtraction & Division |
+| UC13 | Centralized arithmetic logic |
 
 ---
 
 ## 🔥 Key Achievement
 
-UC12 transforms the application from a comparison-based system into a **fully operational arithmetic measurement engine**.
+UC13 demonstrates architectural maturity.
 
-The system now supports:
+The system now:
 
-- Equality
-- Conversion
-- Addition
-- Subtraction
-- Division
-- Explicit target units
-- Multiple measurement domains
-- Strong type safety
+- Avoids duplicated logic
+- Is easier to maintain
+- Is safer to extend
+- Preserves all existing functionality
+- Follows clean code principles
 
-The architecture remains generic, scalable, and extensible.
+This marks the transition from feature-based development to architecture-level refinement.
