@@ -78,22 +78,6 @@ This improves object-oriented design and introduces **polymorphism**.
 
 ---
 
-## 📁 Project Structure (UC8)
-
-```
-src/main/java/com/QuantityMeasurementApp/
-    LengthUnit.java
-    QuantityLength.java
-    Feet.java
-    Inch.java
-    Yard.java
-
-src/test/java/com/QuantityMeasurementApp/
-    QuantityLengthTest.java
-```
-
----
-
 ## 🆕 File Changes from UC7
 
 | File | Status | Reason |
