@@ -1,104 +1,117 @@
-# ✅ UC8: Standalone Unit Implementation
+# ✅ UC9: Weight Measurement
 
 ## 📖 Description
 
-The Quantity Measurement Application is enhanced to introduce **Standalone Unit Classes**.
+The Quantity Measurement Application is extended to support **Weight Management** in addition to Length Management.
 
-Until UC7, objects were created using:
+Until UC8, the system handled only length units such as:
 
-```java
-new QuantityLength(1.0, LengthUnit.FEET);
-```
+- Feet
+- Inch
+- Yard
 
-In UC8, each measurement unit is represented as its own class:
+UC9 introduces support for weight units:
 
-```java
-new Feet(1.0);
-new Inch(12.0);
-new Yard(1.0);
-```
+- Gram
+- Kilogram
+- Tonne
 
-These standalone unit classes extend the base `QuantityLength` class and inherit all functionality including:
-
-- Equality comparison
-- Unit conversion
-- Cross-unit addition
-- Target-unit addition
-
-This improves object-oriented design and introduces **polymorphism**.
+This enhancement ensures that different measurement domains (Length and Weight) are handled separately while maintaining consistency in equality and addition operations.
 
 ---
 
 ## 🔎 Preconditions
 
-- Standalone unit classes (`Feet`, `Inch`, `Yard`) must extend `QuantityLength`.
-- Each unit class must pass the appropriate `LengthUnit` to the base constructor.
-- Core business logic remains centralized in `QuantityLength`.
+- Length and Weight are treated as separate measurement categories.
+- Each measurement type has its own unit system.
+- Supported Weight conversions:
+  - `1 Kilogram = 1000 Gram`
+  - `1 Tonne = 1,000,000 Gram`
+- Length and Weight must not be mixed during comparison or addition.
 
 ---
 
 ## 🔄 Main Flow
 
-1. User creates measurement objects using standalone unit classes.
-2. Each standalone class internally calls the base class constructor.
-3. All logic (conversion, equality, addition) is handled by the base class.
-4. Operations work seamlessly across all units.
+1. User creates measurement objects:
+   - Length → `Feet`, `Inch`, `Yard`
+   - Weight → `Gram`, `Kilogram`, `Tonne`
+2. For comparison:
+   - Values are normalized to their respective base unit.
+     - Length → Feet
+     - Weight → Gram
+3. For addition:
+   - Both quantities are converted to base unit.
+   - Values are added.
+   - Result is converted back to the unit of the calling object.
 
 ---
 
 ## 📤 Postconditions
 
-- Objects are now created using specific unit classes.
-- No duplication of logic exists.
-- Core functionality remains unchanged.
-- System maintains immutability and scalability.
+- Length operations work only with Length.
+- Weight operations work only with Weight.
+- Cross-domain comparison (Length vs Weight) returns `false`.
+- Addition returns a new immutable object.
+- Adding `null` throws `IllegalArgumentException`.
 
 ---
 
-## 🧠 Concepts Learned (UC8)
+## 🧠 Concepts Learned (UC9)
 
-- Object-Oriented Design (OOP)
-- Inheritance
-- Polymorphism
-- Code Reusability
-- Clean Architecture
-- Separation of Concerns
-- DRY Principle
-
----
-
-## 🧪 Key Improvements Over UC7
-
-| Feature | UC7 | UC8 |
-|----------|------|------|
-| Object Creation | `new QuantityLength(value, unit)` | `new Feet(value)` |
-| Design | Enum-driven | Polymorphic standalone classes |
-| Logic Location | Base class | Base class (unchanged) |
-| Readability | Moderate | Cleaner & intuitive |
+- Domain Separation (Length vs Weight)
+- Abstraction using Base Class (`Quantity`)
+- Encapsulation of Conversion Logic
+- Type Safety
+- Immutability
+- Open-Closed Principle
+- Scalable Multi-Domain Architecture
 
 ---
 
-## 🆕 File Changes from UC7
+## 🧪 Key Concepts Tested
 
-| File | Status | Reason |
-|------|--------|--------|
-| LengthUnit.java | Unchanged | No logic change |
-| QuantityLength.java | Modified | Constructor visibility adjusted for inheritance |
-| Feet.java | Replaced | Now extends `QuantityLength` |
-| Inch.java | New | Standalone unit class |
-| Yard.java | New | Standalone unit class |
-| QuantityLengthTest.java | Optional update | Can now use standalone objects |
+### 🔁 Length Equality
+
+| Comparison | Result |
+|------------|--------|
+| 1 ft vs 12 inch | ✅ Equal |
+| 1 yard vs 3 ft | ✅ Equal |
 
 ---
 
-## 🔥 Example Usage
+### ⚖️ Weight Equality
 
-```java
-QuantityLength f = new Feet(1.0);
-QuantityLength i = new Inch(12.0);
+| Comparison | Result |
+|------------|--------|
+| 1 kg vs 1000 gram | ✅ Equal |
+| 1 tonne vs 1000 kg | ✅ Equal |
 
-System.out.println(f.equals(i)); // true
-```
+---
+
+### ➕ Length Addition
+
+| Operation | Result |
+|------------|--------|
+| 1 ft + 12 inch | 2 ft |
+| 1 yard + 3 ft | 2 yard |
+
+---
+
+### ➕ Weight Addition
+
+| Operation | Result |
+|------------|--------|
+| 1 kg + 1000 gram | 2 kg |
+| 1 tonne + 1000 kg | 2 tonne |
+
+---
+
+### 🚫 Type Safety
+
+- Length ≠ Weight  
+- Example:
+  - `1 ft` is **not equal** to `1 kg`
 
 ---
 
@@ -114,18 +127,17 @@ System.out.println(f.equals(i)); // true
 | UC6 | Unit addition |
 | UC7 | Target unit addition |
 | UC8 | Standalone unit classes |
+| UC9 | Weight management |
 
 ---
 
-## 🎯 Key Achievement
+## 🔥 Key Achievement
 
-UC8 transforms the system into a cleaner object-oriented architecture by introducing standalone unit classes while keeping all core logic centralized.
+UC9 transforms the system from a single-domain measurement application into a **multi-domain measurement framework**.
 
-The system is now:
+The architecture now:
 
-- Highly maintainable  
-- Easily extendable  
-- Architecturally sound  
-- Ready for further enhancements
-
----
+- Supports multiple measurement categories
+- Prevents invalid cross-domain operations
+- Maintains clean abstraction
+- Remains easily extensible for future measurement types
