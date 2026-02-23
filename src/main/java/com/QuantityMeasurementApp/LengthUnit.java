@@ -4,29 +4,18 @@ package com.QuantityMeasurementApp;
  * Enum representing supported length units.
  * All conversions are normalized through base unit (Feet).
  */
+
 public enum LengthUnit {
 
-    FEET(1.0),
-    INCH(1.0 / 12.0),
-    YARD(3.0);
+	FEET(12.0), INCHES(1.0), YARDS(36.0), CENTIMETERS(0.393701);
 
-    private final double toFeetFactor;
+	private final double toInchesFactor;
 
-    LengthUnit(double toFeetFactor) {
-        this.toFeetFactor = toFeetFactor;
-    }
+	LengthUnit(double toInchesFactor) {
+		this.toInchesFactor = toInchesFactor;
+	}
 
-    /**
-     * Convert given value to Feet (base unit).
-     */
-    public double toFeet(double value) {
-        return value * toFeetFactor;
-    }
-
-    /**
-     * Convert from Feet to target unit.
-     */
-    public double fromFeet(double feetValue) {
-        return feetValue / toFeetFactor;
-    }
+	public double toInches(double value) {
+		return value * toInchesFactor;
+	}
 }
