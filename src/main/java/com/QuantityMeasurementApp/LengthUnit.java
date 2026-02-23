@@ -1,10 +1,6 @@
 package com.QuantityMeasurementApp;
 
-/**
- * Enum representing supported length units.
- * All conversions are normalized through base unit (Feet).
- */
-public enum LengthUnit {
+public enum LengthUnit implements Unit {
 
     FEET(1.0),
     INCH(1.0 / 12.0),
@@ -16,17 +12,13 @@ public enum LengthUnit {
         this.toFeetFactor = toFeetFactor;
     }
 
-    /**
-     * Convert given value to Feet (base unit).
-     */
-    public double toFeet(double value) {
+    @Override
+    public double toBase(double value) {
         return value * toFeetFactor;
     }
 
-    /**
-     * Convert from Feet to target unit.
-     */
-    public double fromFeet(double feetValue) {
-        return feetValue / toFeetFactor;
+    @Override
+    public double fromBase(double baseValue) {
+        return baseValue / toFeetFactor;
     }
 }

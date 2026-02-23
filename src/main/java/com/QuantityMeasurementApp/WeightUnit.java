@@ -1,10 +1,6 @@
 package com.QuantityMeasurementApp;
 
-/**
- * Enum for weight units.
- * Base unit: Gram
- */
-public enum WeightUnit {
+public enum WeightUnit implements Unit {
 
     GRAM(1.0),
     KILOGRAM(1000.0),
@@ -16,11 +12,13 @@ public enum WeightUnit {
         this.toGramFactor = toGramFactor;
     }
 
-    public double toGram(double value) {
+    @Override
+    public double toBase(double value) {
         return value * toGramFactor;
     }
 
-    public double fromGram(double gramValue) {
-        return gramValue / toGramFactor;
+    @Override
+    public double fromBase(double baseValue) {
+        return baseValue / toGramFactor;
     }
 }
