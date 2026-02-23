@@ -20,5 +20,18 @@ public class QuantityMeasurementApp {
         Quantity<VolumeUnit> volume2 = new Quantity<>(10.0, VolumeUnit.LITRE);
 
         System.out.println("Division Volume: " + volume1.divide(volume2));
+        
+        Quantity<TemperatureUnit> temp1 =
+                new Quantity<>(0.0, TemperatureUnit.CELSIUS);
+
+        Quantity<TemperatureUnit> temp2 =
+                new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
+
+        System.out.println("Temperature equality: " + temp1.equals(temp2));
+
+        Quantity<TemperatureUnit> temp3 =
+                temp1.add(new Quantity<>(10.0, TemperatureUnit.CELSIUS));
+
+        System.out.println("Temperature addition: " + temp3.getValue());
     }
 }

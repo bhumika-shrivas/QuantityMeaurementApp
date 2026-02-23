@@ -41,13 +41,17 @@ public class Quantity<U extends IMeasurable> {
         if (!(obj instanceof Quantity<?> other)) return false;
 
         // Prevent cross-category comparison
-        if (!this.unit.getClass().equals(other.unit.getClass()))
+        if (!getUnitCategory(this.unit).equals(getUnitCategory(other.unit)))
             return false;
 
         double baseThis = unit.convertToBaseUnit(this.value);
-        double baseOther = ((Quantity<IMeasurable>)other).unit.convertToBaseUnit(((Quantity<IMeasurable>)other).value);
+        double baseOther = other.unit.convertToBaseUnit(other.getValue());
 
         return Math.abs(baseThis - baseOther) < EPSILON;
+    }
+
+    private Object getUnitCategory(IMeasurable unit) {
+        return (unit instanceof Enum<?> e) ? e.getDeclaringClass() : unit.getClass();
     }
 
     @Override
@@ -101,7 +105,7 @@ public class Quantity<U extends IMeasurable> {
         if (other == null)
             throw new IllegalArgumentException("Null operand");
 
-        if (!this.unit.getClass().equals(other.unit.getClass()))
+        if (!getUnitCategory(this.unit).equals(getUnitCategory(other.unit)))
             throw new IllegalArgumentException("Cross-category operation not allowed");
 
         double baseOther = other.unit.convertToBaseUnit(other.value);
@@ -132,10 +136,7 @@ public class Quantity<U extends IMeasurable> {
 
         double converted = targetUnit.convertFromBaseUnit(baseResult);
 
-        // Round to 2 decimal places as per requirements
-        double rounded = Math.round(converted * 100.0) / 100.0;
-
-        return new Quantity<>(rounded, targetUnit);
+        return new Quantity<>(converted, targetUnit);
     }
 
     private void validateOperands(Quantity<U> other, U targetUnit) {
@@ -145,7 +146,7 @@ public class Quantity<U extends IMeasurable> {
         if (targetUnit == null)
             throw new IllegalArgumentException("Null target unit");
 
-        if (!this.unit.getClass().equals(other.unit.getClass()))
+        if (!getUnitCategory(this.unit).equals(getUnitCategory(other.unit)))
             throw new IllegalArgumentException("Cross-category operation not allowed");
     }
 }

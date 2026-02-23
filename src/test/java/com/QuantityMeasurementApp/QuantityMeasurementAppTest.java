@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class QuantityMeasurementAppTest {
 
-    private static final double EPSILON = 0.001;
+    private static final double EPSILON1 = 0.001;
 
     // --- Subtraction Tests ---
 
@@ -19,7 +19,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(5.0, result.getValue(), EPSILON);
+        assertEquals(5.0, result.getValue(), EPSILON1);
         assertEquals(LengthUnit.FEET, result.getUnit());
     }
 
@@ -29,7 +29,7 @@ public class QuantityMeasurementAppTest {
         Quantity<VolumeUnit> q1 = new Quantity<>(10.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> q2 = new Quantity<>(3.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> result = q1.subtract(q2);
-        assertEquals(7.0, result.getValue(), EPSILON);
+        assertEquals(7.0, result.getValue(), EPSILON1);
         assertEquals(VolumeUnit.LITRE, result.getUnit());
     }
 
@@ -39,7 +39,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(6.0, LengthUnit.INCHES);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(9.5, result.getValue(), EPSILON);
+        assertEquals(9.5, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(120.0, LengthUnit.INCHES);
         Quantity<LengthUnit> q2 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(60.0, result.getValue(), EPSILON);
+        assertEquals(60.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(6.0, LengthUnit.INCHES);
         Quantity<LengthUnit> result = q1.subtract(q2, LengthUnit.FEET);
-        assertEquals(9.5, result.getValue(), EPSILON);
+        assertEquals(9.5, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(6.0, LengthUnit.INCHES);
         Quantity<LengthUnit> result = q1.subtract(q2, LengthUnit.INCHES);
-        assertEquals(114.0, result.getValue(), EPSILON);
+        assertEquals(114.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class QuantityMeasurementAppTest {
         Quantity<VolumeUnit> q1 = new Quantity<>(5.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> q2 = new Quantity<>(2.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> result = q1.subtract(q2, VolumeUnit.MILLILITRE);
-        assertEquals(3000.0, result.getValue(), EPSILON);
+        assertEquals(3000.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(-5.0, result.getValue(), EPSILON);
+        assertEquals(-5.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(120.0, LengthUnit.INCHES);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(0.0, result.getValue(), EPSILON);
+        assertEquals(0.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(0.0, LengthUnit.INCHES);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(5.0, result.getValue(), EPSILON);
+        assertEquals(5.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(-2.0, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(7.0, result.getValue(), EPSILON);
+        assertEquals(7.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class QuantityMeasurementAppTest {
         Quantity<WeightUnit> q1 = new Quantity<>(1e6, WeightUnit.KILOGRAM);
         Quantity<WeightUnit> q2 = new Quantity<>(5e5, WeightUnit.KILOGRAM);
         Quantity<WeightUnit> result = q1.subtract(q2);
-        assertEquals(5e5, result.getValue(), EPSILON);
+        assertEquals(5e5, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -137,7 +137,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(0.001, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(0.0005, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(0.0005, result.getValue(), EPSILON);
+        assertEquals(0.0005, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> result = new Quantity<>(10.0, LengthUnit.FEET)
                 .subtract(new Quantity<>(2.0, LengthUnit.FEET))
                 .subtract(new Quantity<>(1.0, LengthUnit.FEET));
-        assertEquals(7.0, result.getValue(), EPSILON);
+        assertEquals(7.0, result.getValue(), EPSILON1);
     }
 
     // --- Division Tests ---
@@ -184,7 +184,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(2.0, LengthUnit.FEET);
         double result = q1.divide(q2);
-        assertEquals(5.0, result, EPSILON);
+        assertEquals(5.0, result, EPSILON1);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class QuantityMeasurementAppTest {
         Quantity<VolumeUnit> q1 = new Quantity<>(10.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> q2 = new Quantity<>(5.0, VolumeUnit.LITRE);
         double result = q1.divide(q2);
-        assertEquals(2.0, result, EPSILON);
+        assertEquals(2.0, result, EPSILON1);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(24.0, LengthUnit.INCHES);
         Quantity<LengthUnit> q2 = new Quantity<>(2.0, LengthUnit.FEET);
         double result = q1.divide(q2);
-        assertEquals(1.0, result, EPSILON);
+        assertEquals(1.0, result, EPSILON1);
     }
 
     @Test
@@ -211,7 +211,7 @@ public class QuantityMeasurementAppTest {
         Quantity<WeightUnit> q1 = new Quantity<>(2.0, WeightUnit.KILOGRAM);
         Quantity<WeightUnit> q2 = new Quantity<>(2000.0, WeightUnit.GRAM);
         double result = q1.divide(q2);
-        assertEquals(1.0, result, EPSILON);
+        assertEquals(1.0, result, EPSILON1);
     }
 
     @Test
@@ -227,7 +227,7 @@ public class QuantityMeasurementAppTest {
         // Ratio < 1.0 case.
         Quantity<LengthUnit> q1 = new Quantity<>(5.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(10.0, LengthUnit.FEET);
-        assertEquals(0.5, q1.divide(q2), EPSILON);
+        assertEquals(0.5, q1.divide(q2), EPSILON1);
     }
 
     @Test
@@ -235,7 +235,7 @@ public class QuantityMeasurementAppTest {
         // Equivalence detection through division.
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(120.0, LengthUnit.INCHES);
-        assertEquals(1.0, q1.divide(q2), EPSILON);
+        assertEquals(1.0, q1.divide(q2), EPSILON1);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class QuantityMeasurementAppTest {
         // Verifies that A.divide(B) != B.divide(A).
         Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(5.0, LengthUnit.FEET);
-        assertNotEquals(q1.divide(q2), q2.divide(q1), EPSILON);
+        assertNotEquals(q1.divide(q2), q2.divide(q1), EPSILON1);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class QuantityMeasurementAppTest {
         // Very large ratios.
         Quantity<WeightUnit> q1 = new Quantity<>(1e6, WeightUnit.KILOGRAM);
         Quantity<WeightUnit> q2 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
-        assertEquals(1e6, q1.divide(q2), EPSILON);
+        assertEquals(1e6, q1.divide(q2), EPSILON1);
     }
 
     @Test
@@ -304,7 +304,7 @@ public class QuantityMeasurementAppTest {
 
         double left = (a.divide(b)) / c.getValue();
         double right = a.getValue() / (b.divide(c));
-        assertNotEquals(left, right, EPSILON);
+        assertNotEquals(left, right, EPSILON1);
     }
 
     @Test
@@ -312,7 +312,7 @@ public class QuantityMeasurementAppTest {
         // verifies that subtraction and division operations coexist.
         Quantity<LengthUnit> result = new Quantity<>(10.0, LengthUnit.FEET)
                 .subtract(new Quantity<>(2.0, LengthUnit.FEET));
-        assertEquals(4.0, result.divide(new Quantity<>(2.0, LengthUnit.FEET)), EPSILON);
+        assertEquals(4.0, result.divide(new Quantity<>(2.0, LengthUnit.FEET)), EPSILON1);
     }
 
     @Test
@@ -348,7 +348,7 @@ public class QuantityMeasurementAppTest {
         Quantity<LengthUnit> q1 = new Quantity<>(10.555, LengthUnit.FEET);
         Quantity<LengthUnit> q2 = new Quantity<>(0.555, LengthUnit.FEET);
         Quantity<LengthUnit> result = q1.subtract(q2);
-        assertEquals(10.0, result.getValue(), EPSILON);
+        assertEquals(10.0, result.getValue(), EPSILON1);
     }
 
     @Test
@@ -413,7 +413,7 @@ public class QuantityMeasurementAppTest {
     void testConversion_LitreToMillilitre() {
         // Verifies conversion from litre to millilitre.
         Quantity<VolumeUnit> q = new Quantity<>(1.0, VolumeUnit.LITRE);
-        assertEquals(1000.0, q.convertTo(VolumeUnit.MILLILITRE).getValue(), EPSILON);
+        assertEquals(1000.0, q.convertTo(VolumeUnit.MILLILITRE).getValue(), EPSILON1);
     }
 
     @Test
@@ -469,5 +469,56 @@ public class QuantityMeasurementAppTest {
     void testEquality_NullUnit() {
         // Verifies that Exception thrown for null unit in constructor.
         assertThrows(IllegalArgumentException.class, () -> new Quantity<>(1.0, null));
+    }
+    
+
+    @Test
+    void testCelsiusToFahrenheitEquality() {
+        assertTrue(
+            new Quantity<>(0.0, TemperatureUnit.CELSIUS)
+                .equals(new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT))
+        );
+    }
+
+    @Test
+    void testCelsiusToKelvinEquality() {
+        assertTrue(
+            new Quantity<>(0.0, TemperatureUnit.CELSIUS)
+                .equals(new Quantity<>(273.15, TemperatureUnit.KELVIN))
+        );
+    }
+
+    @Test
+    void testFahrenheitToKelvinEquality() {
+        assertTrue(
+            new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT)
+                .equals(new Quantity<>(273.15, TemperatureUnit.KELVIN))
+        );
+    }
+
+    @Test
+    void testTemperatureAddition() {
+        Quantity<TemperatureUnit> result =
+                new Quantity<>(0.0, TemperatureUnit.CELSIUS)
+                        .add(new Quantity<>(10.0, TemperatureUnit.CELSIUS));
+
+        assertEquals(10.0, result.getValue(), EPSILON1);
+    }
+
+    @Test
+    void testTemperatureSubtraction() {
+        Quantity<TemperatureUnit> result =
+                new Quantity<>(10.0, TemperatureUnit.CELSIUS)
+                        .subtract(new Quantity<>(5.0, TemperatureUnit.CELSIUS));
+
+        assertEquals(5.0, result.getValue(), EPSILON1);
+    }
+
+    @Test
+    void testCrossCategoryComparison() {
+        assertFalse(
+            new Quantity<>(0.0, TemperatureUnit.CELSIUS)
+                .equals(new Quantity<>(0.0, LengthUnit.FEET))
+        );
     }
 }
