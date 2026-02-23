@@ -1,26 +1,17 @@
 package com.QuantityMeasurementApp;
 
-/**
- * Enum for supported length units.
- * Each unit defines a conversion factor to a base unit (feet).
- */
 public enum LengthUnit {
-    FEET(1.0),
-    INCH(1.0 / 12.0);
 
-    private final double toFeetFactor;
+    FEET(12.0),
+    INCHES(1.0);
 
-    LengthUnit(double toFeetFactor) {
-        this.toFeetFactor = toFeetFactor;
+    private final double conversionFactor;
+
+    LengthUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
     }
 
-    /**
-     * Convert a value of this unit to feet.
-     *
-     * @param value measurement value
-     * @return value converted to feet
-     */
-    public double toFeet(double value) {
-        return value * toFeetFactor;
+    public double getConversionFactor() {
+        return conversionFactor;
     }
 }
