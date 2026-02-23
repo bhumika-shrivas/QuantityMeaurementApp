@@ -1,115 +1,119 @@
-# ✅ UC7: Target Unit Addition
+# ✅ UC8: Standalone Unit Implementation
 
 ## 📖 Description
 
-The Quantity Measurement Application is enhanced to support **addition of length quantities with a specified target unit**.
+The Quantity Measurement Application is enhanced to introduce **Standalone Unit Classes**.
 
-This feature builds upon:
+Until UC7, objects were created using:
 
-- UC3 – Generic Length Design  
-- UC4 – Yard Support  
-- UC5 – Unit Conversion  
-- UC6 – Unit Addition  
-
-UC7 allows users to add two `QuantityLength` objects and explicitly specify the unit in which the result should be returned.
-
-### 📌 Example
-
-```
-1 ft + 12 inch → 24 inch
-1 yard + 3 ft → 6 ft
-3 ft + 1 yard → 2 yard
+```java
+new QuantityLength(1.0, LengthUnit.FEET);
 ```
 
-All calculations internally normalize values through a base unit (**Feet**) to ensure consistency and accuracy.
+In UC8, each measurement unit is represented as its own class:
+
+```java
+new Feet(1.0);
+new Inch(12.0);
+new Yard(1.0);
+```
+
+These standalone unit classes extend the base `QuantityLength` class and inherit all functionality including:
+
+- Equality comparison
+- Unit conversion
+- Cross-unit addition
+- Target-unit addition
+
+This improves object-oriented design and introduces **polymorphism**.
 
 ---
 
 ## 🔎 Preconditions
 
-- Two valid `QuantityLength` objects must be created.
-- A valid `LengthUnit` must be provided as the target unit.
-- The second operand must not be `null`.
-- Supported units:
-  - Feet
-  - Inch
-  - Yard
+- Standalone unit classes (`Feet`, `Inch`, `Yard`) must extend `QuantityLength`.
+- Each unit class must pass the appropriate `LengthUnit` to the base constructor.
+- Core business logic remains centralized in `QuantityLength`.
 
 ---
 
 ## 🔄 Main Flow
 
-1. User calls:
-
-   ```java
-   add(QuantityLength other, LengthUnit targetUnit)
-   ```
-
-2. Internally:
-   - Both quantities are converted to the base unit (Feet).
-   - Values are added.
-   - The sum is converted to the specified target unit.
-
-3. A new immutable `QuantityLength` object is returned.
+1. User creates measurement objects using standalone unit classes.
+2. Each standalone class internally calls the base class constructor.
+3. All logic (conversion, equality, addition) is handled by the base class.
+4. Operations work seamlessly across all units.
 
 ---
 
 ## 📤 Postconditions
 
-- Returns a new `QuantityLength` object in the specified target unit.
-- Original objects remain unchanged (immutability preserved).
-- Throws `IllegalArgumentException` if attempting to add `null`.
+- Objects are now created using specific unit classes.
+- No duplication of logic exists.
+- Core functionality remains unchanged.
+- System maintains immutability and scalability.
 
 ---
 
-## 🧠 Concepts Learned (UC7)
+## 🧠 Concepts Learned (UC8)
 
-- Target-based arithmetic operations  
-- Flexible API design  
-- Base unit normalization  
-- Open-Closed Principle  
-- Immutability  
-- Clean and scalable architecture  
-
----
-
-## 🧪 Key Concepts Tested
-
-### ➕ Target Unit Addition
-
-| Operation | Target Unit | Result |
-|------------|------------|--------|
-| 1 ft + 12 inch | Inch | 24 inch |
-| 1 yard + 3 ft | Feet | 6 ft |
-| 3 ft + 1 yard | Yard | 2 yard |
+- Object-Oriented Design (OOP)
+- Inheritance
+- Polymorphism
+- Code Reusability
+- Clean Architecture
+- Separation of Concerns
+- DRY Principle
 
 ---
 
-### ⚠ Exception Handling
+## 🧪 Key Improvements Over UC7
 
-- Adding `null` throws `IllegalArgumentException`
-
----
-
-## 🧪 Sample Test Cases
-
-- `testAdditionWithTargetUnit_Inch()`
-- `testAdditionWithTargetUnit_Feet()`
-- `testAdditionWithTargetUnit_Yard()`
-- `testAddNull_ShouldThrowException()`
-- `testCrossUnitEquality()`
+| Feature | UC7 | UC8 |
+|----------|------|------|
+| Object Creation | `new QuantityLength(value, unit)` | `new Feet(value)` |
+| Design | Enum-driven | Polymorphic standalone classes |
+| Logic Location | Base class | Base class (unchanged) |
+| Readability | Moderate | Cleaner & intuitive |
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Structure (UC8)
 
 ```
 src/main/java/com/QuantityMeasurementApp/
     LengthUnit.java
     QuantityLength.java
+    Feet.java
+    Inch.java
+    Yard.java
 
 src/test/java/com/QuantityMeasurementApp/
     QuantityLengthTest.java
+```
+
+---
+
+## 🆕 File Changes from UC7
+
+| File | Status | Reason |
+|------|--------|--------|
+| LengthUnit.java | Unchanged | No logic change |
+| QuantityLength.java | Modified | Constructor visibility adjusted for inheritance |
+| Feet.java | Replaced | Now extends `QuantityLength` |
+| Inch.java | New | Standalone unit class |
+| Yard.java | New | Standalone unit class |
+| QuantityLengthTest.java | Optional update | Can now use standalone objects |
+
+---
+
+## 🔥 Example Usage
+
+```java
+QuantityLength f = new Feet(1.0);
+QuantityLength i = new Inch(12.0);
+
+System.out.println(f.equals(i)); // true
 ```
 
 ---
@@ -125,18 +129,19 @@ src/test/java/com/QuantityMeasurementApp/
 | UC5 | Unit conversion |
 | UC6 | Unit addition |
 | UC7 | Target unit addition |
+| UC8 | Standalone unit classes |
 
 ---
 
-## 🔥 Key Achievement
+## 🎯 Key Achievement
 
-UC7 provides full flexibility for arithmetic operations across units by allowing users to control the output unit.
+UC8 transforms the system into a cleaner object-oriented architecture by introducing standalone unit classes while keeping all core logic centralized.
 
-The system now supports:
+The system is now:
 
-- Equality comparison  
-- Unit conversion  
-- Cross-unit addition  
-- Target-based addition  
+- Highly maintainable  
+- Easily extendable  
+- Architecturally sound  
+- Ready for further enhancements
 
-The architecture remains scalable and easily extendable for future units.
+---
