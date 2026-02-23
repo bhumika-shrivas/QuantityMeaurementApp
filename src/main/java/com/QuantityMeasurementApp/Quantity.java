@@ -9,6 +9,8 @@ public class Quantity {
     private final Unit unit;
 
     public Quantity(double value, Unit unit) {
+        if (unit == null)
+            throw new IllegalArgumentException("Unit cannot be null");
         this.value = value;
         this.unit = unit;
     }
@@ -30,7 +32,10 @@ public class Quantity {
     }
 
     public Quantity add(Quantity other) {
+        return add(other, this.unit);
+    }
 
+    public Quantity add(Quantity other, Unit targetUnit) {
         if (other == null)
             throw new IllegalArgumentException("Cannot add null");
 
@@ -41,10 +46,9 @@ public class Quantity {
         double otherBase = other.unit.toBase(other.value);
 
         double sumBase = thisBase + otherBase;
+        double finalValue = targetUnit.fromBase(sumBase);
 
-        double finalValue = unit.fromBase(sumBase);
-
-        return new Quantity(finalValue, this.unit);
+        return new Quantity(finalValue, targetUnit);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class Quantity {
         double thisBase = unit.toBase(this.value);
         double otherBase = other.unit.toBase(other.value);
 
-        return Double.compare(thisBase, otherBase) == 0;
+        return Math.abs(thisBase - otherBase) < 1e-5;
     }
 
     @Override
