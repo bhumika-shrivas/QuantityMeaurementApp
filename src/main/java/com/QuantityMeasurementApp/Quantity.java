@@ -3,14 +3,22 @@ package com.QuantityMeasurementApp;
 /**
  * Generic Quantity class supporting all measurement types.
  */
-public class Quantity {
+
+import java.util.Objects;
+
+public class Quantity<U extends IMeasurable> {
 
     private final double value;
-    private final Unit unit;
+    private final U unit;
 
-    public Quantity(double value, Unit unit) {
-        if (unit == null)
+    public Quantity(double value, U unit) {
+        if (unit == null) {
             throw new IllegalArgumentException("Unit cannot be null");
+        }
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+
         this.value = value;
         this.unit = unit;
     }
@@ -19,57 +27,78 @@ public class Quantity {
         return value;
     }
 
-    public Unit getUnit() {
+    public U getUnit() {
         return unit;
     }
 
-    public Quantity convertTo(Unit targetUnit) {
-
-        double baseValue = unit.toBase(this.value);
-        double convertedValue = targetUnit.fromBase(baseValue);
-
-        return new Quantity(convertedValue, targetUnit);
+    public double convertTo(U targetUnit) {
+        double baseValue = unit.convertToBaseUnit(value);
+        return targetUnit.convertFromBaseUnit(baseValue);
     }
 
-    public Quantity add(Quantity other) {
-        return add(other, this.unit);
+    public Quantity<U> add(Quantity<U> other) {
+        double base1 = this.unit.convertToBaseUnit(this.value);
+        double base2 = other.unit.convertToBaseUnit(other.value);
+
+        double totalBase = base1 + base2;
+        double result = this.unit.convertFromBaseUnit(totalBase);
+
+        return new Quantity<>(result, this.unit);
     }
 
-    public Quantity add(Quantity other, Unit targetUnit) {
-        if (other == null)
-            throw new IllegalArgumentException("Cannot add null");
+    public Quantity<U> add(Quantity<U> other, U targetUnit) {
+        double base1 = this.unit.convertToBaseUnit(this.value);
+        double base2 = other.unit.convertToBaseUnit(other.value);
 
-        if (!this.unit.getClass().equals(other.unit.getClass()))
-            throw new IllegalArgumentException("Cannot add different measurement types");
+        double totalBase = base1 + base2;
+        double result = targetUnit.convertFromBaseUnit(totalBase);
 
-        double thisBase = unit.toBase(this.value);
-        double otherBase = other.unit.toBase(other.value);
-
-        double sumBase = thisBase + otherBase;
-        double finalValue = targetUnit.fromBase(sumBase);
-
-        return new Quantity(finalValue, targetUnit);
+        return new Quantity<>(result, targetUnit);
     }
 
     @Override
     public boolean equals(Object obj) {
-
         if (this == obj) return true;
-        if (!(obj instanceof Quantity)) return false;
+        if (!(obj instanceof Quantity<?> other)) return false;
 
-        Quantity other = (Quantity) obj;
-
-        if (!this.unit.getClass().equals(other.unit.getClass()))
+        // Prevent cross-category comparison (e.g., Length vs Weight vs Volume)
+        if (this.unit.getClass() != other.getUnit().getClass()) {
             return false;
+        }
 
-        double thisBase = unit.toBase(this.value);
-        double otherBase = other.unit.toBase(other.value);
+        double base1 = this.unit.convertToBaseUnit(this.value);
+        double base2 = other.unit.convertToBaseUnit(other.value);
 
-        return Math.abs(thisBase - otherBase) < 1e-5;
+        return Math.abs(base1 - base2) < 1e-6;
     }
 
     @Override
     public int hashCode() {
-        return Double.hashCode(unit.toBase(value));
+        double base = unit.convertToBaseUnit(value);
+        return Objects.hash(Math.round(base * 1000000));
+    }
+
+    @Override
+    public String toString() {
+        return value + " " + unit.getUnitName();
+    }
+    
+    public static void main(String[] args) {
+
+        Quantity<LengthUnit> l1 = new Quantity<>(1.0, LengthUnit.FEET);
+        Quantity<LengthUnit> l2 = new Quantity<>(12.0, LengthUnit.INCHES);
+
+        System.out.println("Are lengths equal? " + l1.equals(l2));
+
+        Quantity<WeightUnit> w1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> w2 = new Quantity<>(1000.0, WeightUnit.GRAM);
+
+        System.out.println("Are weights equal? " + w1.equals(w2));
+
+        System.out.println("10 feet in inches: " + new Quantity<>(10.0, LengthUnit.FEET).convertTo(LengthUnit.INCHES));
+
+        System.out.println("1 ft + 12 in = " + l1.add(l2));
+
+        System.out.println("1 kg + 1000 g in grams = " + w1.add(w2, WeightUnit.GRAM));
     }
 }

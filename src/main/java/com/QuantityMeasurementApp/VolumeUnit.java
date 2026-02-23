@@ -2,55 +2,37 @@ package com.QuantityMeasurementApp;
 
 /**
  * Enum representing Volume units.
- * Base unit: Milliliter
+ * Base unit: LITRE
  */
-public enum VolumeUnit implements Unit {
+public enum VolumeUnit implements IMeasurable {
 
-    MILLILITER(0.001),
-    LITER(1.0),
+    LITRE(1.0),
+    MILLILITRE(0.001),
     GALLON(3.78541);
 
-    private final double toBaseFactor;
+    private final double conversionFactor;
 
-    VolumeUnit(double toBaseFactor) {
-        this.toBaseFactor = toBaseFactor;
+    VolumeUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
     }
 
-    /**
-     * Converts given value to base unit (Liter).
-     */
     @Override
-    public double toBase(double value) {
-        return value * toBaseFactor;
-    }
-
-    /**
-     * Converts base unit (Liter) value to this unit.
-     */
-    @Override
-    public double fromBase(double baseValue) {
-        return baseValue / toBaseFactor;
-    }
-
-    /**
-     * Explicit conversion to base unit (Liter).
-     */
-    public double convertToBaseUnit(double value) {
-        return value * toBaseFactor;
-    }
-
-    /**
-     * Explicit conversion from base unit (Liter)
-     * to this enum unit.
-     */
-    public double convertFromBaseUnit(double baseValue) {
-        return baseValue / toBaseFactor;
-    }
-
-    /**
-     * Returns conversion factor relative to base unit (Liter).
-     */
     public double getConversionFactor() {
-        return toBaseFactor;
+        return conversionFactor;
+    }
+
+    @Override
+    public double convertToBaseUnit(double value) {
+        return value * conversionFactor;
+    }
+
+    @Override
+    public double convertFromBaseUnit(double baseValue) {
+        return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName() {
+        return name();
     }
 }
