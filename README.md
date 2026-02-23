@@ -1,159 +1,209 @@
-# ✅ UC13: Centralized Arithmetic Logic
+# ✅ UC14: Temperature Measurement
 
 ## 📖 Description
 
-UC13 focuses on architectural improvement by centralizing arithmetic logic inside the `Quantity` class.
+UC14 extends the Generic Quantity framework by introducing **Temperature Measurement** support.
 
-Until UC12, arithmetic operations such as:
+Unlike previous measurement categories (Length, Weight, Volume), temperature conversion is **non-linear** and involves both scaling and offset adjustments.
 
-- Addition
-- Subtraction
-- Explicit target unit arithmetic
-
-contained repeated base conversion logic.
-
-UC13 refactors the system to eliminate duplication by introducing a single centralized method responsible for handling arithmetic operations.
-
-No new functionality is added in this use case.  
-All previous use cases (UC1–UC12) must continue to work unchanged.
+This use case demonstrates that the architecture supports not only multiplicative conversions but also **formula-based conversions**, without modifying the core `Quantity` class.
 
 ---
 
 ## 🎯 Objective
 
-- Remove duplicated arithmetic logic.
-- Centralize conversion and computation in a single method.
-- Improve maintainability and readability.
-- Preserve backward compatibility.
-- Follow DRY (Don’t Repeat Yourself) principle.
+- Introduce `TemperatureUnit` enum.
+- Support temperature units:
+  - Celsius
+  - Fahrenheit
+  - Kelvin
+- Enable:
+  - Equality comparison
+  - Conversion between units
+  - Addition and subtraction
+- Preserve centralized arithmetic logic from UC13.
+- Maintain cross-category safety.
+- Ensure backward compatibility (UC1–UC13 remain unchanged).
 
 ---
 
-## 🏗 Architectural Improvement
+## 🌡 Temperature Units
 
-### 🔹 Before UC13
+| Unit | Conversion to Base (Celsius) |
+|------|-------------------------------|
+| Celsius | C |
+| Fahrenheit | (F − 32) × 5/9 |
+| Kelvin | K − 273.15 |
 
-Arithmetic methods like:
-
-```
-add()
-subtract()
-add(targetUnit)
-subtract(targetUnit)
-```
-
-Each performed:
-
-- Conversion to base unit
-- Operation in base unit
-- Conversion back to target unit
-- Rounding logic
-
-This resulted in repeated logic.
+Base unit: **Celsius**
 
 ---
 
-### 🔹 After UC13
+## 🔄 Conversion Formulas
 
-A single private method handles all arithmetic:
-
-```
-private Quantity<U> performOperation(
-    Quantity<U> other,
-    U targetUnit,
-    BinaryOperator<Double> operator
-)
-```
-
-Public methods delegate to it:
+### 🔹 Celsius ↔ Fahrenheit
 
 ```
-add() → performOperation(..., Double::sum)
-subtract() → performOperation(..., (a, b) -> a - b)
+°F = (°C × 9/5) + 32
+°C = (°F − 32) × 5/9
 ```
 
-This centralizes:
+### 🔹 Celsius ↔ Kelvin
 
-- Base conversion
-- Operation execution
-- Target conversion
-- Rounding
-- Validation
+```
+K = °C + 273.15
+°C = K − 273.15
+```
+
+---
+
+## 🏗 Architectural Design
+
+Temperature is implemented as:
+
+```
+enum TemperatureUnit implements IMeasurable
+```
+
+Each constant overrides:
+
+```
+toBase(double value)
+fromBase(double baseValue)
+```
+
+Unlike Length/Weight/Volume, temperature does **not** rely on a simple multiplication factor.
+
+No modification was required in:
+
+- `Quantity` class
+- Centralized arithmetic logic
+- Existing measurement domains
+
+This confirms the flexibility of the generic architecture.
 
 ---
 
 ## 🔄 Functional Behavior
 
-### ➕ Addition
+### 🔹 Equality
 
 ```
-10 ft + 5 ft → 15 ft
+0°C == 32°F
+0°C == 273.15K
+32°F == 273.15K
 ```
 
-Delegates to centralized method using `Double::sum`.
+All comparisons normalize to Celsius before evaluation.
 
 ---
 
-### ➖ Subtraction
+### 🔹 Conversion
 
 ```
-10 ft - 6 inch → 9.5 ft
+new Quantity<>(0, CELSIUS).convertTo(FAHRENHEIT)
+→ 32°F
 ```
 
-Delegates to centralized method using `(a, b) -> a - b`.
+```
+new Quantity<>(273.15, KELVIN).convertTo(CELSIUS)
+→ 0°C
+```
 
 ---
 
-### ➗ Division
+### 🔹 Addition & Subtraction
 
-Division remains separate because it returns a `double` ratio and does not produce a `Quantity<U>`.
+Arithmetic works through centralized logic.
+
+Example:
 
 ```
-10 ft ÷ 5 ft → 2.0
+10°C + 5°C → 15°C
 ```
+
+```
+10°C − 5°C → 5°C
+```
+
+⚠ Note: Although mathematically valid in this framework, temperature arithmetic may not always represent physical temperature behavior in real-world thermodynamics.
+
+---
+
+## 🔒 Cross-Category Safety
+
+Temperature cannot be compared or combined with:
+
+- Length
+- Weight
+- Volume
+
+Invalid example:
+
+```
+0°C == 1 ft → false
+```
+
+Cross-category arithmetic throws `IllegalArgumentException`.
 
 ---
 
 ## 📤 Postconditions
 
-- No change in behavior from UC12.
-- All previous tests pass without modification.
-- Code duplication removed.
-- Arithmetic logic maintained in a single location.
+- Temperature integrates without modifying core framework.
+- Non-linear unit conversion is fully supported.
+- All previous use cases remain functional.
+- Arithmetic logic remains centralized (UC13).
 - Immutability preserved.
-- Cross-category safety preserved.
 
 ---
 
-## 🧪 Testing Strategy
+## 🧪 Key Concepts Tested
 
-UC13 does not introduce new functionality.
+### 🌡 Equality Tests
 
-Therefore:
+- Celsius ↔ Fahrenheit equality
+- Celsius ↔ Kelvin equality
+- Fahrenheit ↔ Kelvin equality
+- Cross-category comparison prevention
 
-- All UC1–UC12 test cases must pass unchanged.
-- No new test cases required.
-- Successful test execution validates correct refactoring.
+---
+
+### 🔄 Conversion Tests
+
+- Celsius to Fahrenheit
+- Fahrenheit to Celsius
+- Celsius to Kelvin
+- Kelvin to Celsius
+- Round-trip conversion validation
+
+---
+
+### ➕ Arithmetic Tests
+
+- Addition in same unit
+- Subtraction in same unit
+- Centralized arithmetic validation
 
 ---
 
 ## 🧠 Concepts Learned
 
-- Refactoring without changing behavior
-- DRY principle implementation
-- Functional interfaces (`BinaryOperator`)
-- Centralized logic design
-- Maintainability improvement
-- Clean architecture refinement
+- Non-linear unit conversion
+- Offset-based transformation
+- Enum constant-specific behavior
+- Polymorphism through method overriding
+- Architectural scalability validation
+- Open–Closed Principle compliance
 
 ---
 
 ## 🚀 Architectural Evolution
 
-| Use Case | Capability |
-|----------|------------|
+| Use Case | Capability Added |
+|----------|------------------|
 | UC1 | Feet equality |
-| UC2 | Inch support |
+| UC2 | Inch equality |
 | UC3 | Generic Length |
 | UC4 | Yard support |
 | UC5 | Unit conversion |
@@ -165,19 +215,17 @@ Therefore:
 | UC11 | Volume measurement |
 | UC12 | Subtraction & Division |
 | UC13 | Centralized arithmetic logic |
+| UC14 | Temperature measurement |
 
 ---
 
 ## 🔥 Key Achievement
 
-UC13 demonstrates architectural maturity.
+UC14 proves that the system supports both:
 
-The system now:
+- Linear unit transformations (multiplicative)
+- Non-linear unit transformations (formula-based)
 
-- Avoids duplicated logic
-- Is easier to maintain
-- Is safer to extend
-- Preserves all existing functionality
-- Follows clean code principles
+Without changing the core arithmetic engine.
 
-This marks the transition from feature-based development to architecture-level refinement.
+This confirms the framework’s robustness, scalability, and extensibility across fundamentally different measurement domains.
