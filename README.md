@@ -1,124 +1,147 @@
-# ✅ UC9: Weight Measurement
+# ✅ UC10: Generic Quantity Architecture
 
 ## 📖 Description
 
-The Quantity Measurement Application is extended to support **Weight Management** in addition to Length Management.
+UC10 introduces a major architectural refactoring by implementing a **Generic Quantity Design**.
 
-Until UC8, the system handled only length units such as:
+Until UC9, the system managed Length and Weight using separate classes:
 
-- Feet
-- Inch
-- Yard
+- `QuantityLength`
+- `QuantityWeight`
 
-UC9 introduces support for weight units:
+In UC10, the system is redesigned to use:
 
-- Gram
-- Kilogram
-- Tonne
+- A single reusable `Quantity` class
+- A common `Unit` interface
+- `LengthUnit` and `WeightUnit` implementing `Unit`
 
-This enhancement ensures that different measurement domains (Length and Weight) are handled separately while maintaining consistency in equality and addition operations.
+This eliminates duplication and creates a scalable, domain-independent measurement framework.
 
 ---
 
-## 🔎 Preconditions
+## 🎯 Objective
 
-- Length and Weight are treated as separate measurement categories.
-- Each measurement type has its own unit system.
-- Supported Weight conversions:
-  - `1 Kilogram = 1000 Gram`
-  - `1 Tonne = 1,000,000 Gram`
-- Length and Weight must not be mixed during comparison or addition.
+- Remove duplicated logic between Length and Weight.
+- Introduce a unified quantity model.
+- Preserve domain separation (Length ≠ Weight).
+- Maintain immutability and clean design.
+- Improve extensibility for future measurement types.
+
+---
+
+## 🏗 Architectural Refactoring
+
+### Before UC10
+- Separate classes for Length and Weight.
+- Repeated equality and addition logic.
+- Code duplication across domains.
+
+### After UC10
+- Single `Quantity` class.
+- Common `Unit` abstraction.
+- Centralized equality, conversion, and addition logic.
+- Domain safety enforced through unit type checking.
+
+---
+
+## 🔎 Core Design
+
+### 🔹 Unit Interface
+
+Each measurement unit must implement:
+
+- `toBase(double value)` → Converts to base unit.
+- `fromBase(double baseValue)` → Converts from base unit.
+
+### 🔹 Quantity Class
+
+Handles:
+
+- Equality comparison
+- Unit conversion
+- Addition
+- Type safety enforcement
 
 ---
 
 ## 🔄 Main Flow
 
-1. User creates measurement objects:
-   - Length → `Feet`, `Inch`, `Yard`
-   - Weight → `Gram`, `Kilogram`, `Tonne`
-2. For comparison:
-   - Values are normalized to their respective base unit.
-     - Length → Feet
-     - Weight → Gram
-3. For addition:
-   - Both quantities are converted to base unit.
-   - Values are added.
-   - Result is converted back to the unit of the calling object.
+1. Create a Quantity:
+
+   ```java
+   new Quantity(1.0, LengthUnit.FEET);
+   new Quantity(1.0, WeightUnit.KILOGRAM);
+   ```
+
+2. Equality:
+   - Values normalized using `toBase()`
+   - Only same domain types are compared
+
+3. Addition:
+   - Converted to base unit
+   - Added
+   - Returned in calling unit
+
+4. Conversion:
+   - Convert to base
+   - Convert to target unit
 
 ---
 
 ## 📤 Postconditions
 
-- Length operations work only with Length.
-- Weight operations work only with Weight.
-- Cross-domain comparison (Length vs Weight) returns `false`.
-- Addition returns a new immutable object.
-- Adding `null` throws `IllegalArgumentException`.
+- Equality works within same domain.
+- Length ≠ Weight.
+- Adding different domains throws `IllegalArgumentException`.
+- All operations return new immutable objects.
+- Logic is fully centralized.
 
 ---
 
-## 🧠 Concepts Learned (UC9)
+## 🧪 Key Concepts Tested (35 Test Cases)
 
-- Domain Separation (Length vs Weight)
-- Abstraction using Base Class (`Quantity`)
-- Encapsulation of Conversion Logic
-- Type Safety
-- Immutability
-- Open-Closed Principle
-- Scalable Multi-Domain Architecture
+### 🔁 Equality Contract
+- Reflexive
+- Symmetric
+- Transitive
+- Consistent
+- Null handling
+- HashCode consistency
 
----
+### 📏 Length Validation
+- Feet ↔ Inch ↔ Yard equality
+- Length addition
+- Length conversion
+- Zero & negative cases
 
-## 🧪 Key Concepts Tested
-
-### 🔁 Length Equality
-
-| Comparison | Result |
-|------------|--------|
-| 1 ft vs 12 inch | ✅ Equal |
-| 1 yard vs 3 ft | ✅ Equal |
-
----
-
-### ⚖️ Weight Equality
-
-| Comparison | Result |
-|------------|--------|
-| 1 kg vs 1000 gram | ✅ Equal |
-| 1 tonne vs 1000 kg | ✅ Equal |
-
----
-
-### ➕ Length Addition
-
-| Operation | Result |
-|------------|--------|
-| 1 ft + 12 inch | 2 ft |
-| 1 yard + 3 ft | 2 yard |
-
----
-
-### ➕ Weight Addition
-
-| Operation | Result |
-|------------|--------|
-| 1 kg + 1000 gram | 2 kg |
-| 1 tonne + 1000 kg | 2 tonne |
-
----
+### ⚖️ Weight Validation
+- Gram ↔ Kilogram ↔ Tonne equality
+- Weight addition
+- Weight conversion
+- Zero & negative cases
 
 ### 🚫 Type Safety
+- Length ≠ Weight
+- Cross-domain addition throws exception
 
-- Length ≠ Weight  
-- Example:
-  - `1 ft` is **not equal** to `1 kg`
+---
+
+## 🧠 Concepts Learned
+
+- Interface-based design
+- Elimination of duplication (DRY)
+- Domain separation
+- Polymorphism through abstraction
+- Generic architecture
+- Open-Closed Principle
+- Clean system scalability
 
 ---
 
 ## 🚀 Architectural Evolution
 
 | Use Case | Capability Added |
-|-----------|------------------|
+|----------|------------------|
 | UC1 | Feet equality |
 | UC2 | Feet + Inch equality |
 | UC3 | Generic Length design |
@@ -128,16 +151,20 @@ This enhancement ensures that different measurement domains (Length and Weight) 
 | UC7 | Target unit addition |
 | UC8 | Standalone unit classes |
 | UC9 | Weight management |
+| UC10 | Fully generic quantity architecture |
 
 ---
 
 ## 🔥 Key Achievement
 
-UC9 transforms the system from a single-domain measurement application into a **multi-domain measurement framework**.
+UC10 transforms the application from a unit-specific measurement system into a **generic, reusable measurement framework** capable of supporting multiple domains with minimal duplication.
 
-The architecture now:
+The system is now:
 
-- Supports multiple measurement categories
-- Prevents invalid cross-domain operations
-- Maintains clean abstraction
-- Remains easily extensible for future measurement types
+- Fully extensible
+- Architecturally robust
+- Domain-safe
+- Maintainable
+- Ready for future measurement types (Temperature, Volume, etc.)
+
+---
