@@ -953,3 +953,114 @@ These throw `IllegalArgumentException`.
 - Backward compatibility
 
 ---
+
+### ✅ UC13: Centralized Arithmetic Logic
+
+#### 📖 Description
+UC13 refactors the system by centralizing arithmetic logic inside the `Quantity` class.
+
+Until UC12, methods like:
+- `add()`
+- `subtract()`
+- `add(targetUnit)`
+- `subtract(targetUnit)`
+
+contained repeated base conversion and rounding logic.
+
+UC13 removes duplication by introducing a single internal method that handles all arithmetic operations.
+
+No new functionality is added. All UC1–UC12 behavior remains unchanged.
+
+---
+
+#### 🎯 Objective
+- Eliminate duplicated arithmetic logic  
+- Centralize conversion and computation  
+- Improve maintainability and readability  
+- Preserve backward compatibility  
+- Apply DRY principle  
+
+---
+
+#### 🏗 Architectural Improvement
+
+**Before UC13**
+Each arithmetic method performed:
+- Convert to base unit  
+- Apply operation  
+- Convert to target unit  
+- Apply rounding  
+- Validate inputs  
+
+This caused repetition.
+
+**After UC13**
+
+A single private method manages arithmetic:
+
+```
+private Quantity<U> performOperation(
+    Quantity<U> other,
+    U targetUnit,
+    BinaryOperator<Double> operator
+)
+```
+
+Public methods delegate:
+
+```
+add()        → performOperation(..., Double::sum)
+subtract()   → performOperation(..., (a, b) -> a - b)
+```
+
+This centralizes:
+- Base conversion  
+- Operation execution  
+- Target conversion  
+- Rounding  
+- Validation  
+
+---
+
+#### 🔄 Functional Behavior
+
+**➕ Addition**
+```
+10 ft + 5 ft → 15 ft
+```
+
+**➖ Subtraction**
+```
+10 ft - 6 inch → 9.5 ft
+```
+
+Both delegate to the centralized method.
+
+**➗ Division**
+Remains separate because it returns a `double`.
+
+```
+10 ft ÷ 5 ft → 2.0
+```
+
+---
+
+#### 📤 Postconditions
+- No behavioral changes from UC12  
+- All previous tests pass unchanged  
+- Code duplication removed  
+- Arithmetic logic centralized  
+- Immutability preserved  
+- Cross-category safety preserved  
+
+---
+
+## 🧠 Concepts Covered
+- Refactoring without behavior change  
+- DRY principle  
+- Functional interfaces (`BinaryOperator`)  
+- Centralized logic design  
+- Maintainability improvement  
+- Clean architecture refinement  
+
+---
