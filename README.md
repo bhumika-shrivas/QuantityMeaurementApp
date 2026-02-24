@@ -600,3 +600,108 @@ Length and Weight are handled as separate domains while maintaining consistent e
 - `testAddNull_ShouldThrowException()`
 
 ---
+
+### ✅ UC10: Generic Quantity Architecture
+
+#### 📖 Description
+UC10 introduces a **generic quantity design** that unifies Length and Weight handling.
+
+Previously:
+- `QuantityLength`
+- `QuantityWeight`
+
+Now replaced with:
+- A single `Quantity` class  
+- A common `Unit` interface  
+- `LengthUnit` and `WeightUnit` implementing `Unit`  
+
+This removes duplication and creates a reusable, domain-independent framework while preserving domain separation.
+
+---
+
+#### 🎯 Objective
+- Eliminate duplicate logic  
+- Unify quantity handling  
+- Preserve domain safety (Length ≠ Weight)  
+- Maintain immutability  
+- Improve extensibility  
+
+---
+
+#### 🔎 Core Design
+
+**Unit Interface**
+- `toBase(double value)`
+- `fromBase(double baseValue)`
+
+**Quantity Class**
+- Handles equality  
+- Handles conversion  
+- Handles addition  
+- Enforces domain/type safety  
+- Returns immutable objects  
+
+---
+
+#### 🔄 Main Flow
+1. Create:
+   ```java
+   new Quantity(1.0, LengthUnit.FEET);
+   new Quantity(1.0, WeightUnit.KILOGRAM);
+   ```
+2. Equality:
+   - Normalize using `toBase()`
+   - Compare only same domains  
+3. Addition:
+   - Convert to base  
+   - Add values  
+   - Return in calling unit  
+4. Conversion:
+   - Base → Target unit  
+
+---
+
+#### 📤 Postconditions
+- Equality works within same domain  
+- Length ≠ Weight  
+- Cross-domain addition throws `IllegalArgumentException`  
+- All operations return new immutable objects  
+- Logic is centralized  
+
+---
+
+## 🧠 Concepts Covered
+- Interface-based design  
+- DRY principle  
+- Domain separation  
+- Polymorphism  
+- Open-Closed Principle  
+- Scalable architecture  
+
+---
+
+## 🧪 Key Validations
+
+### 🔁 Equality Contract
+- Reflexive  
+- Symmetric  
+- Transitive  
+- Consistent  
+- Null handling  
+- HashCode consistency  
+
+### 📏 Length
+- Feet ↔ Inch ↔ Yard equality  
+- Length addition & conversion  
+- Zero and negative cases  
+
+### ⚖️ Weight
+- Gram ↔ Kilogram ↔ Tonne equality  
+- Weight addition & conversion  
+- Zero and negative cases  
+
+### 🚫 Type Safety
+- Length ≠ Weight  
+- Cross-domain addition throws exception
+
+---
