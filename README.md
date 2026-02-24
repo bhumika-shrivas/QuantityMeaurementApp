@@ -72,6 +72,8 @@ The `QuantityMeasurementApp` class compares two numerical values measured in fee
 - `testEquality_NonNumericInput()`  
 - `testEquality_SameReference()`
 
+🔗 [UC1 - FeetEquality](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC1-FeetEquality)
+
 ---
 
 ### ✅ UC2: Feet and Inches Measurement Equality
@@ -127,6 +129,8 @@ Ensures strict type safety (`Feet ≠ Inches`) and value-based comparison.
 - `testInchesEquality_SameValue()`
 - `testInchesEquality_DifferentValue()`
 - `testFeetAndInchesComparison_ShouldReturnFalse()`
+
+🔗 [UC2 - InchEquality](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC2-InchEquality)
 
 ---
 
@@ -190,6 +194,8 @@ Example: `1.0 ft == 12.0 inch → true`
 - `testNullComparison_ShouldReturnFalse()`
 - `testSameReference_ShouldReturnTrue()`
 
+🔗 [UC3 - GenericLength](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC3-GenericLength)
+
 ---
 
 ### ✅ UC4: Yard Equality Support
@@ -250,6 +256,8 @@ Example: `1.0 yard == 3.0 ft → true`
 - `testDifferentValues_ShouldReturnFalse()`
 - `testNullComparison_ShouldReturnFalse()`
 - `testSameReference_ShouldReturnTrue()`
+
+🔗 [UC4 - YardEquality](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC4-YardEquality)
 
 ---
 
@@ -314,6 +322,8 @@ Supports Feet, Inch, and Yard with normalization through base unit (Feet).
 - `testYardToInchConversion()`
 - `testCrossUnitEquality()`
 - `testNullComparison()`
+
+🔗 [UC5 - UnitConversion](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC5-UnitConversion)
 
 ---
 
