@@ -830,3 +830,126 @@ Result defaults to the first operand’s unit.
 - Cross-category operations prevented  
 
 ---
+
+### ✅ UC12: Subtraction & Division Support
+
+#### 📖 Description
+UC12 extends the Generic Quantity architecture by adding **Subtraction** and **Division** operations.
+
+Until UC11, the system supported:
+- Equality
+- Conversion
+- Addition (implicit & explicit target)
+- Multiple domains (Length, Weight, Volume)
+
+UC12 enhances the framework with:
+- Subtraction between quantities
+- Explicit target unit subtraction
+- Division producing a dimensionless ratio
+
+Immutability and cross-category safety are preserved.
+
+---
+
+#### 🎯 Objective
+- Implement subtraction for same-category quantities  
+- Support explicit target subtraction  
+- Implement division returning `double` ratio  
+- Prevent cross-category arithmetic  
+- Maintain immutability and backward compatibility  
+
+---
+
+## ➖ Subtraction
+
+### 🔹 Implicit Target Unit
+Result defaults to the first operand’s unit.
+
+```
+10 ft - 6 inch → 9.5 ft
+```
+
+### 🔹 Explicit Target Unit
+```
+10 ft - 6 inch (target = INCH) → 114 inch
+```
+
+### 🔹 Rules
+- Non-commutative  
+- Negative results allowed  
+- Zero results valid  
+- Rounded to 2 decimal places  
+- Returns new immutable `Quantity<U>`  
+
+---
+
+## ➗ Division
+
+Produces a **dimensionless ratio**.
+
+```
+10 ft ÷ 5 ft → 2.0
+24 inch ÷ 2 ft → 1.0
+```
+
+### 🔹 Rules
+- Units cancel out  
+- Returns `double`  
+- Non-commutative  
+- Division by zero → `ArithmeticException`  
+- Cross-category division → `IllegalArgumentException`  
+
+---
+
+## 🔒 Cross-Category Safety
+Invalid operations:
+```
+10 ft - 5 kg
+10 L ÷ 2 ft
+```
+These throw `IllegalArgumentException`.
+
+---
+
+#### 📤 Postconditions
+- All operations return new immutable objects  
+- Original quantities remain unchanged  
+- Cross-category protection enforced  
+- Division by zero prevented  
+- Previous use cases remain functional  
+
+---
+
+## 🧠 Concepts Covered
+- Non-commutative operations  
+- Dimensionless ratio design  
+- Defensive programming  
+- Fail-fast validation  
+- Rounding strategy  
+- Arithmetic chaining  
+- Scalable architecture  
+
+---
+
+## 🧪 Key Validations
+
+### ➖ Subtraction
+- Same & cross-unit subtraction  
+- Explicit target subtraction  
+- Negative & zero results  
+- Null handling  
+- Cross-category protection  
+
+### ➗ Division
+- Same & cross-unit division  
+- Ratio > 1 and < 1  
+- Non-commutativity  
+- Division by zero  
+- Cross-category validation  
+
+### 🔁 Integration
+- Addition–subtraction inverse property  
+- Arithmetic chaining  
+- Backward compatibility
+
+---
