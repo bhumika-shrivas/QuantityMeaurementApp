@@ -316,3 +316,69 @@ Supports Feet, Inch, and Yard with normalization through base unit (Feet).
 - `testNullComparison()`
 
 ---
+
+### ✅ UC6: Unit Addition Feature
+
+#### 📖 Description
+Adds support for adding two `QuantityLength` objects, even with different units.  
+Result is returned in the unit of the calling object.
+
+Examples:  
+`1 ft + 12 inch = 2 ft`  
+`1 yard + 3 ft = 2 yard`  
+
+All calculations are normalized through base unit (Feet).
+
+---
+
+#### 🔎 Preconditions
+- Two valid `QuantityLength` objects are created.
+- Units supported: Feet, Inch, Yard.
+- Second operand must not be `null`.
+
+---
+
+#### 🔄 Main Flow
+1. Call `add()` on a `QuantityLength` object.
+2. Internally:
+   - Convert both values to Feet.
+   - Add them.
+   - Convert result back to caller’s unit.
+3. Return a new immutable `QuantityLength`.
+
+---
+
+#### 📤 Postconditions
+- Returns new object with summed value.
+- Original objects remain unchanged.
+- Throws `IllegalArgumentException` for `null`.
+
+---
+
+## 🧠 Concepts Covered
+- Cross-unit arithmetic  
+- Base unit normalization  
+- Immutability  
+- Exception handling  
+- Reuse of conversion logic (DRY)  
+- Extensible design  
+
+---
+
+## 🧪 Key Rules
+- `1 ft + 1 ft = 2 ft`
+- `1 ft + 12 inch = 2 ft`
+- `1 yard + 3 ft = 2 yard`
+- Adding `null` → Exception  
+
+---
+
+## 🧪 Sample Test Cases
+- `testFeetPlusFeet()`
+- `testFeetPlusInch()`
+- `testYardPlusFeet()`
+- `testYardPlusInch()`
+- `testAddNull_ShouldThrowException()`
+- `testCrossUnitEquality()`
+
+---
