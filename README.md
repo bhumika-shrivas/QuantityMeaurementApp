@@ -252,3 +252,67 @@ Example: `1.0 yard == 3.0 ft → true`
 - `testSameReference_ShouldReturnTrue()`
 
 ---
+
+### ✅ UC5: Unit Conversion Support
+
+#### 📖 Description
+Adds explicit unit conversion using `convertTo()` in `QuantityLength`.  
+Supports Feet, Inch, and Yard with normalization through base unit (Feet).
+
+---
+
+#### 🔎 Preconditions
+- `QuantityLength` is created with:
+  - Numeric value  
+  - Valid `LengthUnit`
+- Conversion uses defined factors:
+  - 1 ft = 12 inch  
+  - 1 yard = 3 ft  
+  - 1 yard = 36 inch  
+
+---
+
+#### 🔄 Main Flow
+1. Create a `QuantityLength` object.
+2. Call `convertTo(targetUnit)`.
+3. Internally:
+   - Convert value to Feet.
+   - Convert Feet to target unit.
+4. Return a new `QuantityLength` with converted value.
+
+---
+
+#### 📤 Postconditions
+- Returns new converted object (immutability maintained).
+- Original object remains unchanged.
+- Equality continues to work across units.
+
+---
+
+## 🧠 Concepts Covered
+- Unit conversion logic  
+- Bi-directional conversion  
+- Base unit normalization  
+- Immutability  
+- Open-Closed Principle  
+- Extensible design  
+
+---
+
+## 🧪 Key Rules
+- `1 ft → 12 inch`
+- `12 inch → 1 ft`
+- `1 yard → 3 ft`
+- `1 yard → 36 inch`
+
+---
+
+## 🧪 Sample Test Cases
+- `testFeetToInchConversion()`
+- `testInchToFeetConversion()`
+- `testYardToFeetConversion()`
+- `testYardToInchConversion()`
+- `testCrossUnitEquality()`
+- `testNullComparison()`
+
+---
