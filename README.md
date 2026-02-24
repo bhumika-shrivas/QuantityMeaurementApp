@@ -391,6 +391,8 @@ All calculations are normalized through base unit (Feet).
 - `testAddNull_ShouldThrowException()`
 - `testCrossUnitEquality()`
 
+🔗 [UC6 - UnitAddition](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC6-UnitAddition)
+
 ---
 
 ### ✅ UC7: Target Unit Addition
@@ -452,6 +454,8 @@ All calculations are normalized through base unit (Feet).
 - `testAdditionWithTargetUnit_Yard()`
 - `testAddNull_ShouldThrowException()`
 - `testCrossUnitEquality()`
+
+🔗 [UC7 - TargetUnitAddition](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC8-TargetUnitAddition)
 
 ---
 
@@ -520,6 +524,9 @@ QuantityLength i = new Inch(12.0);
 
 System.out.println(f.equals(i)); // true
 ```
+
+🔗 [UC8 - StandaloneUnit](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC8-StandaloneUnit)
+
 ---
 
 ### ✅ UC9: Weight Measurement
@@ -608,6 +615,8 @@ Length and Weight are handled as separate domains while maintaining consistent e
 - `testWeightAddition()`
 - `testCrossDomainComparison_ShouldReturnFalse()`
 - `testAddNull_ShouldThrowException()`
+
+🔗 [UC9 - WeightMeasurement](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC9-WeightMeasurement)
 
 ---
 
@@ -713,6 +722,8 @@ This removes duplication and creates a reusable, domain-independent framework wh
 ### 🚫 Type Safety
 - Length ≠ Weight  
 - Cross-domain addition throws exception
+
+🔗 [UC10 - GenericQuanity](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC10-GenericQuantity)
 
 ---
 
@@ -839,6 +850,8 @@ Result defaults to the first operand’s unit.
 - Volume ≠ Weight  
 - Cross-category operations prevented  
 
+🔗 [UC11 - VolumeMeasurement](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC11-VolumeMeasurement)
+
 ---
 
 ### ✅ UC12: Subtraction & Division Support
@@ -962,6 +975,8 @@ These throw `IllegalArgumentException`.
 - Arithmetic chaining  
 - Backward compatibility
 
+🔗 [UC12 - SubtractionDivision](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC12-SubtractionDivision)
+
 ---
 
 ### ✅ UC13: Centralized Arithmetic Logic
@@ -1072,6 +1087,8 @@ Remains separate because it returns a `double`.
 - Centralized logic design  
 - Maintainability improvement  
 - Clean architecture refinement  
+
+🔗 [UC13 - CentralizedArithmeticLogic](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC13-CentralizedArithmeticLogic)
 
 ---
 
@@ -1232,5 +1249,7 @@ Cross-category arithmetic throws `IllegalArgumentException`.
 - Polymorphism via method overriding  
 - Open–Closed Principle  
 - Architectural scalability
+
+🔗 [UC14 - TemperatureMeasurement](https://github.com/bhumika-shrivas/QuantityMeaurementApp/tree/feature/UC14-TemperatureMeasurement)
 
 ---
