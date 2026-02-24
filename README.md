@@ -382,3 +382,65 @@ All calculations are normalized through base unit (Feet).
 - `testCrossUnitEquality()`
 
 ---
+
+### ✅ UC7: Target Unit Addition
+
+#### 📖 Description
+Enhances addition by allowing users to specify the **target unit** for the result.  
+Two `QuantityLength` objects can be added and returned in Feet, Inch, or Yard.
+
+Example: `1 ft + 12 inch → 24 inch`
+
+All calculations are normalized through base unit (Feet).
+
+---
+
+#### 🔎 Preconditions
+- Two valid `QuantityLength` objects.
+- A valid `LengthUnit` as target unit.
+- Second operand must not be `null`.
+- Supported units: Feet, Inch, Yard.
+
+---
+
+#### 🔄 Main Flow
+1. Call:
+   `add(QuantityLength other, LengthUnit targetUnit)`
+2. Convert both values to Feet.
+3. Add them.
+4. Convert sum to target unit.
+5. Return new immutable `QuantityLength`.
+
+---
+
+#### 📤 Postconditions
+- Returns result in specified unit.
+- Original objects remain unchanged.
+- Throws `IllegalArgumentException` for `null`.
+
+---
+
+## 🧠 Concepts Covered
+- Target-based arithmetic  
+- Base unit normalization  
+- Immutability  
+- DRY principle  
+- Scalable design  
+
+---
+
+## 🧪 Key Rules
+- `1 ft + 12 inch → 24 inch`
+- `1 yard + 3 ft → 6 ft`
+- Adding `null` → Exception  
+
+---
+
+## 🧪 Sample Test Cases
+- `testAdditionWithTargetUnit_Inch()`
+- `testAdditionWithTargetUnit_Feet()`
+- `testAdditionWithTargetUnit_Yard()`
+- `testAddNull_ShouldThrowException()`
+- `testCrossUnitEquality()`
+
+---
