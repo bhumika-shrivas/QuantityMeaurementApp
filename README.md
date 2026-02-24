@@ -511,3 +511,92 @@ QuantityLength i = new Inch(12.0);
 System.out.println(f.equals(i)); // true
 ```
 ---
+
+### ✅ UC9: Weight Measurement
+
+#### 📖 Description
+Extends the application to support **Weight Management** along with Length.
+
+Length units:
+- Feet
+- Inch
+- Yard
+
+Weight units:
+- Gram
+- Kilogram
+- Tonne
+
+Length and Weight are handled as separate domains while maintaining consistent equality and addition logic.
+
+---
+
+#### 🔎 Preconditions
+- Length and Weight are separate measurement categories.
+- Each domain has its own base unit:
+  - Length → Feet
+  - Weight → Gram
+- Weight conversions:
+  - 1 Kilogram = 1000 Gram
+  - 1 Tonne = 1,000,000 Gram
+- Cross-domain operations are not allowed.
+
+---
+
+#### 🔄 Main Flow
+1. Create measurement objects:
+   - Length → `Feet`, `Inch`, `Yard`
+   - Weight → `Gram`, `Kilogram`, `Tonne`
+2. For equality:
+   - Convert values to respective base unit.
+3. For addition:
+   - Normalize to base unit.
+   - Add values.
+   - Convert result back to caller’s unit.
+
+---
+
+#### 📤 Postconditions
+- Length operations work only with Length.
+- Weight operations work only with Weight.
+- Length vs Weight comparison → `false`.
+- Addition returns new immutable object.
+- Adding `null` throws `IllegalArgumentException`.
+
+---
+
+## 🧠 Concepts Covered
+- Domain separation (Length vs Weight)
+- Abstraction using base class (`Quantity`)
+- Type safety
+- Base unit normalization
+- Immutability
+- Open-Closed Principle
+
+---
+
+## 🧪 Key Rules
+
+### 🔁 Length
+- `1 ft = 12 inch`
+- `1 yard = 3 ft`
+
+### ⚖️ Weight
+- `1 kg = 1000 gram`
+- `1 tonne = 1000 kg`
+
+### 🚫 Type Safety
+- Length ≠ Weight  
+- Example: `1 ft` is not equal to `1 kg`
+
+---
+
+## 🧪 Sample Test Cases
+- `testLengthEquality()`
+- `testWeightEquality()`
+- `testLengthAddition()`
+- `testWeightAddition()`
+- `testCrossDomainComparison_ShouldReturnFalse()`
+- `testAddNull_ShouldThrowException()`
+
+---
