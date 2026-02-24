@@ -12,270 +12,241 @@ This app is being developed incrementally. Each use case defines a specific scop
 
 ---
 
-## 🚀 Implemented Feature
+## 🚀 Implemented Features
 
-### ✅ UC1: Feet Measurement Equality
+### ✅ UC1: Feet Measurement Equality  
 
-#### 📖 Description
+#### 📖 Description  
+The `QuantityMeasurementApp` class compares two numerical values measured in feet and determines if they are equal, handling key edge cases properly.  
 
-The `QuantityMeasurementApp` class checks the equality of two numerical values measured in feet. It ensures accurate comparison and handles important edge cases.
+#### 🔎 Preconditions  
+- `QuantityMeasurementApp` is instantiated.  
+- Two numerical feet values are provided.  
 
-#### 🔎 Preconditions
+#### 🔄 Main Flow  
+1. User enters two feet values.  
+2. Inputs are validated to ensure they are numeric.  
+3. Values are compared for equality.  
+4. Result (`true`/`false`) is returned.  
 
-- The `QuantityMeasurementApp` class is instantiated.
-- Two numerical values in feet are provided for comparison.
-
-#### 🔄 Main Flow
-
-1. User inputs two numerical values in feet.
-2. Input values are validated to ensure they are numeric.
-3. The two values are compared for equality.
-4. The result (true/false) is returned.
-
-#### 📤 Postconditions
-
-- Returns `true` if both values are equal.
-- Returns `false` if values are not equal.
+#### 📤 Postconditions  
+- Returns `true` if values are equal.  
+- Returns `false` otherwise.  
 
 ---
 
-## 🧠 Concepts Learned (UC1)
+## 🧠 Concepts Covered (UC1)  
 
-- ✅ Object Equality – Properly overriding `equals()` method  
-- ✅ Floating-Point Comparison – Using `Double.compare()` instead of `==`  
-- ✅ Null Safety – Preventing `NullPointerException`  
-- ✅ Type Safety – Ensuring correct object comparison  
-- ✅ Encapsulation & Immutability – Using private final fields  
-- ✅ Unit Testing Best Practices  
+- Object Equality – Overriding `equals()` correctly  
+- Floating-Point Comparison – Using `Double.compare()`  
+- Null Safety – Avoiding `NullPointerException`  
+- Type Safety – Comparing only same types  
+- Encapsulation & Immutability – Private `final` fields  
+- Unit Testing best practices  
 
 ---
 
-## 🧪 Key Concepts Tested
+## 🧪 Key Principles Tested  
 
-### 🔁 Equality Contract
+### 🔁 Equality Contract  
 - Reflexive  
 - Symmetric  
 - Transitive  
 - Consistent  
 - Null handling  
 
-### 🛡️ Type Safety
-- Objects are equal only if they belong to the same type.
+### 🛡️ Type Safety  
+- Equality only for same-type objects  
 
-### 🎯 Value-Based Equality
+### 🎯 Value-Based Equality  
 - Same values → Equal  
 - Different values → Not equal  
 
 ---
 
-## 🧪 Sample Test Cases
+## 🧪 Sample Test Cases  
 
 - `testEquality_SameValue()`  
 - `testEquality_DifferentValue()`  
 - `testEquality_NullComparison()`  
 - `testEquality_NonNumericInput()`  
-- `testEquality_SameReference()`  
+- `testEquality_SameReference()`
 
 ---
 
 ### ✅ UC2: Feet and Inches Measurement Equality
 
 #### 📖 Description
-
-The Quantity Measurement Application now supports equality comparison for both **Feet** and **Inches** measurements.
-
-This use case extends **UC1 (Feet Equality)** by introducing a separate `Inches` class while preserving the existing `Feet` functionality.
-
-Each measurement type ensures accurate value-based comparison and maintains strict type safety (`Feet ≠ Inches`).
+Adds equality support for both **Feet** and **Inches** measurements.  
+Extends UC1 by introducing an `Inches` class while keeping `Feet` intact.  
+Ensures strict type safety (`Feet ≠ Inches`) and value-based comparison.
 
 ---
 
 #### 🔎 Preconditions
-
-- `Feet` and `Inches` classes are properly defined.
-- Two numerical values (either in feet or inches) are provided for comparison.
-- Objects must belong to the same measurement type for equality to return `true`.
+- `Feet` and `Inches` classes are defined.
+- Two measurement objects are created.
+- Equality works only for same-type objects.
 
 ---
 
 #### 🔄 Main Flow
-
-1. User creates two measurement objects (`Feet` or `Inches`).
-2. Values are stored in immutable (`private final`) fields.
-3. The `equals()` method is invoked for comparison.
-4. Type checking ensures only same-type objects are compared.
-5. Result (`true` / `false`) is returned.
+1. Create two `Feet` or `Inches` objects.
+2. Values stored in `private final` fields.
+3. `equals()` method compares values.
+4. Type check ensures same-class comparison.
+5. Returns `true` / `false`.
 
 ---
 
 #### 📤 Postconditions
-
-- Returns `true` if:
-  - Both objects are of the same type  
-  - Both contain equal numeric values  
-
-- Returns `false` if:
-  - Values differ  
-  - Objects are of different types (`Feet` vs `Inches`)  
-  - One object is `null`  
+- `true` → Same type and same value  
+- `false` → Different value, different type, or `null`
 
 ---
 
-## 🧠 Concepts Learned (UC2)
-
-- ✅ Extending functionality without breaking existing code  
-- ✅ Maintaining the Equality Contract across multiple classes  
-- ✅ Strict Type Safety (`Feet ≠ Inches`)  
-- ✅ Encapsulation & Immutability  
-- ✅ Value-Based Object Comparison  
-- ✅ Clean modular design  
+## 🧠 Concepts Covered
+- Extending functionality safely  
+- Equality Contract implementation  
+- Strict Type Safety  
+- Encapsulation & Immutability  
+- Value-based comparison  
 
 ---
 
-## 🧪 Key Concepts Tested
-
-### 🔁 Equality Contract
-
-- Reflexive  
-- Symmetric  
-- Transitive  
-- Consistent  
-- Null handling  
-
----
-
-### 🛡️ Type Safety
-
-- `Feet` objects are equal only to `Feet`
-- `Inches` objects are equal only to `Inches`
-- `Feet` and `Inches` are never equal even if numeric values match
-
----
-
-### 🎯 Value-Based Equality
-
-| Comparison | Result |
-|------------|--------|
-| 1.0 ft vs 1.0 ft | ✅ Equal |
-| 1.0 inch vs 1.0 inch | ✅ Equal |
-| 1.0 ft vs 2.0 ft | ❌ Not Equal |
-| 1.0 inch vs 2.0 inch | ❌ Not Equal |
-| 1.0 ft vs 1.0 inch | ❌ Not Equal |
+## 🧪 Equality Rules
+- `Feet` equals only `Feet`  
+- `Inches` equals only `Inches`  
+- `Feet` ≠ `Inches` (even if values match)
 
 ---
 
 ## 🧪 Sample Test Cases
-
 - `testFeetEquality_SameValue()`
 - `testFeetEquality_DifferentValue()`
-- `testFeetEquality_NullComparison()`
-- `testFeetEquality_SameReference()`
 - `testInchesEquality_SameValue()`
 - `testInchesEquality_DifferentValue()`
-- `testInchesEquality_NullComparison()`
 - `testFeetAndInchesComparison_ShouldReturnFalse()`
 
 ---
 
-#### ✅ UC3: Generic Length Equality
+### ✅ UC3: Generic Length Equality
 
 #### 📖 Description
+Introduces a unified `QuantityLength` class with a `LengthUnit` enum to support generic length comparison.  
+Removes separate `Feet` and `Inches` classes and enables cross-unit comparison.
 
-The Quantity Measurement Application is enhanced to support **generic length comparison** using a unified model.
-
-Instead of having separate classes for `Feet` and `Inches`, UC3 introduces:
-
-- `QuantityLength` – A generic length representation
-- `LengthUnit` – An enum defining supported units and their conversion factors
-
-This design eliminates duplication and allows comparison across different measurement units.
-
-Example: 1.0 ft == 12.0 inch → true
+Example: `1.0 ft == 12.0 inch → true`
 
 ---
 
 #### 🔎 Preconditions
-
-- A `QuantityLength` object is created with:
-  - A numeric value
-  - A valid `LengthUnit`
-- Supported units are defined in `LengthUnit` enum.
+- `QuantityLength` is created with:
+  - Numeric value  
+  - Valid `LengthUnit`
+- Units are defined in `LengthUnit`.
 - Values are converted to a common base unit before comparison.
 
 ---
 
 #### 🔄 Main Flow
-
-1. User creates two `QuantityLength` objects.
-2. Each object stores:
-   - A numeric value
-   - Its measurement unit
-3. During comparison:
-   - Both values are converted to a base unit (Feet).
-   - `Double.compare()` is used for accurate floating-point comparison.
-4. Equality result (`true` / `false`) is returned.
+1. Create two `QuantityLength` objects.
+2. Each stores value + unit.
+3. During `equals()`:
+   - Convert both to base unit (Feet).
+   - Use `Double.compare()` for accuracy.
+4. Return `true` / `false`.
 
 ---
 
 #### 📤 Postconditions
-
-- Returns `true` if:
-  - Both measurements are equivalent after conversion  
-- Returns `false` if:
-  - Converted values differ  
-  - Object is `null`  
-  - Compared with a different type  
+- `true` → Values are equal after conversion  
+- `false` → Values differ, object is `null`, or type mismatch  
 
 ---
 
-## 🧠 Concepts Learned (UC3)
-
-- ✅ Refactoring to Generic Design  
-- ✅ Eliminating Code Duplication (DRY Principle)  
-- ✅ Using Enums for Unit Representation  
-- ✅ Cross-Unit Comparison  
-- ✅ Value Normalization Before Equality  
-- ✅ Clean and Scalable Architecture  
-
----
-
-## 🧪 Key Concepts Tested
-
-### 🔁 Equality Contract
-
-- Reflexive  
-- Symmetric  
-- Transitive  
-- Consistent  
-- Null handling  
+## 🧠 Concepts Covered
+- Generic design & refactoring  
+- DRY principle  
+- Enums for unit handling  
+- Cross-unit comparison  
+- Value normalization before equality  
+- Scalable architecture  
 
 ---
 
-### 🔄 Cross-Unit Conversion
-
-- `1.0 ft` equals `12.0 inch`
-- `2.0 ft` equals `24.0 inch`
-
----
-
-### 🎯 Value-Based Equality
-
-| Comparison | Result |
-|------------|--------|
-| 1.0 ft vs 1.0 ft | ✅ Equal |
-| 1.0 inch vs 1.0 inch | ✅ Equal |
-| 1.0 ft vs 12.0 inch | ✅ Equal |
-| 2.0 ft vs 24.0 inch | ✅ Equal |
-| 1.0 ft vs 2.0 ft | ❌ Not Equal |
-| 1.0 inch vs 2.0 inch | ❌ Not Equal |
+## 🧪 Key Rules
+- `1.0 ft = 12.0 inch`
+- `2.0 ft = 24.0 inch`
+- Different normalized values → Not equal
 
 ---
 
 ## 🧪 Sample Test Cases
-
 - `testSameUnitEquality_Feet()`
 - `testSameUnitEquality_Inch()`
 - `testCrossUnitEquality()`
+- `testDifferentValues_ShouldReturnFalse()`
+- `testNullComparison_ShouldReturnFalse()`
+- `testSameReference_ShouldReturnTrue()`
+
+---
+
+### ✅ UC4: Yard Equality Support
+
+#### 📖 Description
+Extends the generic `QuantityLength` design by adding **Yard** to `LengthUnit`.  
+All units (Feet, Inch, Yard) support cross-unit comparison.
+
+Example: `1.0 yard == 3.0 ft → true`
+
+---
+
+#### 🔎 Preconditions
+- `QuantityLength` is created with:
+  - Numeric value  
+  - Valid `LengthUnit`
+- Yard conversion is defined in `LengthUnit`.
+- Values are converted to base unit (Feet) before comparison.
+
+---
+
+#### 🔄 Main Flow
+1. Create two `QuantityLength` objects.
+2. Each stores value + unit.
+3. During `equals()`:
+   - Convert both to Feet.
+   - Use `Double.compare()` for precision.
+4. Return `true` / `false`.
+
+---
+
+#### 📤 Postconditions
+- `true` → Equal after conversion  
+- `false` → Values differ, object is `null`, or type mismatch  
+
+---
+
+## 🧠 Concepts Covered
+- Open-Closed Principle  
+- Enum-based unit extension  
+- Cross-unit comparison  
+- DRY principle  
+- Scalable architecture  
+
+---
+
+## 🧪 Key Rules
+- `1.0 yard = 3.0 ft`
+- `1.0 yard = 36.0 inch`
+- Different normalized values → Not equal  
+
+---
+
+## 🧪 Sample Test Cases
+- `testYardEquality_SameUnit()`
+- `testYardToFeet_Equality()`
+- `testYardToInch_Equality()`
 - `testDifferentValues_ShouldReturnFalse()`
 - `testNullComparison_ShouldReturnFalse()`
 - `testSameReference_ShouldReturnTrue()`
