@@ -444,3 +444,70 @@ All calculations are normalized through base unit (Feet).
 - `testCrossUnitEquality()`
 
 ---
+
+### ✅ UC8: Standalone Unit Implementation
+
+#### 📖 Description
+Introduces **standalone unit classes**: `Feet`, `Inch`, and `Yard`.
+
+Instead of:
+```java
+new QuantityLength(1.0, LengthUnit.FEET);
+```
+
+Now objects are created as:
+```java
+new Feet(1.0);
+new Inch(12.0);
+new Yard(1.0);
+```
+
+Each unit class extends `QuantityLength` and inherits:
+- Equality comparison  
+- Unit conversion  
+- Cross-unit addition  
+- Target-unit addition  
+
+This improves readability and strengthens object-oriented design.
+
+---
+
+#### 🔎 Preconditions
+- `Feet`, `Inch`, and `Yard` extend `QuantityLength`.
+- Each class passes the correct `LengthUnit` to the base constructor.
+- Core logic remains centralized in `QuantityLength`.
+
+---
+
+#### 🔄 Main Flow
+1. Create objects using standalone unit classes.
+2. Constructors delegate to the base constructor.
+3. All operations (equality, conversion, addition) are handled by `QuantityLength`.
+4. Cross-unit functionality works without logic duplication.
+
+---
+
+#### 📤 Postconditions
+- Objects are created using specific unit classes.
+- No duplication of business logic.
+- Immutability is preserved.
+
+---
+
+## 🧠 Concepts Covered
+- Inheritance  
+- Polymorphism  
+- Code reusability  
+- Separation of concerns  
+- DRY principle  
+
+---
+
+## 🧪 Example Usage
+```java
+QuantityLength f = new Feet(1.0);
+QuantityLength i = new Inch(12.0);
+
+System.out.println(f.equals(i)); // true
+```
+---
