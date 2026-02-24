@@ -1064,3 +1064,163 @@ Remains separate because it returns a `double`.
 - Clean architecture refinement  
 
 ---
+
+### ✅ UC14: Temperature Measurement
+
+#### 📖 Description
+UC14 extends the Generic Quantity framework by introducing **Temperature Measurement**.
+
+Unlike Length, Weight, and Volume, temperature conversion is **non-linear** (requires scaling + offset).  
+This use case proves the architecture supports **formula-based conversions** without modifying the core `Quantity` class.
+
+---
+
+#### 🎯 Objective
+- Introduce `TemperatureUnit` enum  
+- Support Celsius, Fahrenheit, Kelvin  
+- Enable equality, conversion, addition, subtraction  
+- Preserve centralized arithmetic logic (UC13)  
+- Maintain cross-category safety  
+- Ensure backward compatibility  
+
+---
+
+## 🌡 Temperature Units
+
+**Base Unit:** Celsius
+
+| Unit | Conversion to Base (°C) |
+|------|--------------------------|
+| Celsius | C |
+| Fahrenheit | (F − 32) × 5/9 |
+| Kelvin | K − 273.15 |
+
+---
+
+## 🔄 Conversion Formulas
+
+**Celsius ↔ Fahrenheit**
+```
+°F = (°C × 9/5) + 32
+°C = (°F − 32) × 5/9
+```
+
+**Celsius ↔ Kelvin**
+```
+K = °C + 273.15
+°C = K − 273.15
+```
+
+---
+
+## 🏗 Architectural Design
+
+Implemented as:
+```
+enum TemperatureUnit implements IMeasurable
+```
+
+Each unit overrides:
+```
+toBase(double value)
+fromBase(double baseValue)
+```
+
+Temperature does not rely on a simple multiplication factor.  
+No modification was required in:
+- `Quantity` class  
+- Centralized arithmetic logic  
+- Other measurement domains  
+
+---
+
+## 🔄 Functional Behavior
+
+### 🔹 Equality
+```
+0°C == 32°F
+0°C == 273.15K
+32°F == 273.15K
+```
+All comparisons normalize to Celsius.
+
+---
+
+### 🔹 Conversion
+```
+new Quantity<>(0, CELSIUS).convertTo(FAHRENHEIT)
+→ 32°F
+```
+
+```
+new Quantity<>(273.15, KELVIN).convertTo(CELSIUS)
+→ 0°C
+```
+
+---
+
+### 🔹 Addition & Subtraction
+Handled via centralized arithmetic logic.
+
+```
+10°C + 5°C → 15°C
+10°C − 5°C → 5°C
+```
+
+> Note: Arithmetic is mathematically supported but may not reflect real-world thermodynamic behavior.
+
+---
+
+## 🔒 Cross-Category Safety
+Temperature cannot be combined with:
+- Length  
+- Weight  
+- Volume  
+
+Example:
+```
+0°C == 1 ft → false
+```
+
+Cross-category arithmetic throws `IllegalArgumentException`.
+
+---
+
+## 📤 Postconditions
+- Temperature integrates without modifying core framework  
+- Non-linear conversion fully supported  
+- Previous use cases remain functional  
+- Arithmetic logic remains centralized  
+- Immutability preserved  
+
+---
+
+## 🧪 Key Validations
+
+### 🌡 Equality
+- Celsius ↔ Fahrenheit  
+- Celsius ↔ Kelvin  
+- Fahrenheit ↔ Kelvin  
+- Cross-category prevention  
+
+### 🔄 Conversion
+- C ↔ F  
+- C ↔ K  
+- Round-trip validation  
+
+### ➕ Arithmetic
+- Same-unit addition  
+- Same-unit subtraction  
+- Centralized arithmetic validation  
+
+---
+
+## 🧠 Concepts Covered
+- Non-linear unit conversion  
+- Offset-based transformation  
+- Enum constant-specific behavior  
+- Polymorphism via method overriding  
+- Open–Closed Principle  
+- Architectural scalability
+
+---
