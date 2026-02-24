@@ -705,3 +705,128 @@ This removes duplication and creates a reusable, domain-independent framework wh
 - Cross-domain addition throws exception
 
 ---
+
+### ✅ UC11: Volume Measurement
+
+#### 📖 Description
+UC11 extends the Generic Quantity architecture by adding **Volume Measurement** support.
+
+The system now supports three domains:
+
+- 📏 Length (Feet, Inch, Yard)  
+- ⚖️ Weight (Gram, Kilogram, Tonne)  
+- 🧪 Volume (Milliliter, Liter, Kiloliter, Gallon)  
+
+Volume integrates seamlessly using the existing generic `Quantity<U extends IMeasurable>` design.
+
+---
+
+#### 🎯 Objective
+- Introduce Volume measurement category  
+- Implement `VolumeUnit` implementing `IMeasurable`  
+- Support equality, conversion, and addition  
+- Preserve immutability and type safety  
+- Maintain compatibility with previous use cases  
+
+---
+
+#### 🔎 Core Design
+
+**Base Unit:** Milliliter (mL)  
+All values normalize internally to milliliters.
+
+| Unit | Conversion to mL |
+|------|------------------|
+| MILLILITER | 1.0 |
+| LITER | 1000.0 |
+| KILOLITER | 1,000,000.0 |
+| GALLON | 3785.411784 |
+
+No changes were required in the `Quantity` class.
+
+---
+
+#### 🔄 Main Flow
+
+**1️⃣ Equality**
+- Convert both values to mL  
+- Compare normalized values  
+- Cross-domain comparison returns `false`  
+
+Example:
+```
+1.0 L = 1000.0 mL
+1.0 Gallon ≈ 3.78541 L
+```
+
+---
+
+**2️⃣ Conversion**
+```
+new Quantity<>(1.0, LITER).convertTo(MILLILITER)
+→ Quantity(1000.0, MILLILITER)
+```
+
+Supports Liter ↔ Milliliter ↔ Gallon conversions.
+
+---
+
+**3️⃣ Addition (Implicit Unit)**
+```
+1.0 L + 1000.0 mL → 2.0 L
+```
+Result defaults to the first operand’s unit.
+
+---
+
+**4️⃣ Addition (Explicit Target Unit)**
+```
+1.0 L + 1000.0 mL (target = MILLILITER)
+→ 2000.0 mL
+```
+
+---
+
+#### 📤 Postconditions
+- Returns new immutable objects  
+- Cross-domain arithmetic prevented  
+- Zero and negative values supported  
+- Floating-point precision handled using epsilon  
+- Existing Length and Weight functionality remains unchanged  
+
+---
+
+## 🧠 Concepts Covered
+- Open–Closed Principle  
+- Generic architecture scalability  
+- Interface-based polymorphism  
+- Domain separation and type safety  
+- Immutability  
+
+---
+
+## 🧪 Key Validations
+
+### 🔁 Equality
+- Same-unit and cross-unit equality  
+- Gallon conversion  
+- Zero, negative, and precision cases  
+- Cross-domain prevention  
+
+### 🔄 Conversion
+- Liter ↔ Milliliter  
+- Liter ↔ Gallon  
+- Round-trip conversion  
+
+### ➕ Addition
+- Same-unit addition  
+- Cross-unit addition  
+- Explicit target unit addition  
+- Identity (add zero)  
+
+### 🔒 Cross-Domain Safety
+- Volume ≠ Length  
+- Volume ≠ Weight  
+- Cross-category operations prevented  
+
+---
